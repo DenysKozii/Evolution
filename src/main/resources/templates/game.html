@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{common :: header(value='Game')}"></div>
+<div th:replace="~{common :: navbar(game=true)}"></div>
+<body class="bg-light">
+<div class="container">
+    <div>
+        <h1><small th:text="${user.getUsername()}"></small></h1>
+        <p></p>
+        <h1><small th:text="${game.getTimer()}"></small></h1>
+    </div>
+    <div th:if="${game.getWinner() != null}">
+        <h1>Winner <small th:text="${game.getWinner().getUsername()}"></small></h1>
+        <a th:href="@{/profile}" class="btn btn-primary">
+            <span>OK</span>
+        </a>
+    </div>
+
+
+    <div th:if="${game.getWinner() == null}">
+        <table class="table table-hover" >
+            <thead>
+            <tr>
+                <th scope="col">Ability</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="qv,iter : ${user.getGameAbilities()}">
+                <td th:text="${qv.getTitle()}"></td>
+                <td>
+                    <a th:href="@{/ability/mutate/{abilityId}(abilityId = ${qv.getId()})}" class="btn btn-primary">
+                        <span>Mutate</span>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Circle</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr style="background-color:indianred;" th:each="qv,iter : ${game.getUsers().get(0).getUnits()}">
+                <td th:if="${qv.getHp() > 0}" th:text="${qv.getId()}"></td>
+                <td th:if="${qv.getHp() > 0}" th:text="${qv}"></td>
+            </tr>
+            <div th:if="${game.getUsers().size() > 1}">
+                <tr style="background-color:cornflowerblue;"  th:each="qv,iter : ${game.getUsers().get(1).getUnits()}">
+                    <td th:if="${qv.getHp() > 0}" th:text="${qv.getId()}"></td>
+                    <td th:if="${qv.getHp() > 0}" th:text="${qv}"></td>
+                </tr>
+            </div>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<div th:replace="~{common :: js-lb}"></div>
+</html>
