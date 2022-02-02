@@ -28,12 +28,12 @@ public class Lobby extends BaseEntity {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "lobby")
+    @OneToMany(mappedBy = "lobby", fetch = FetchType.EAGER)
     List<User> users = new ArrayList<>();
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "game_id", referencedColumnName = "id")
     private Game game;
 

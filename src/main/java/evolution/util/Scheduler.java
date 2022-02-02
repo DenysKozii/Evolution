@@ -1,12 +1,10 @@
 package evolution.util;
 
-import evolution.entity.Ability;
-import evolution.entity.Game;
-import evolution.entity.Unit;
-import evolution.entity.User;
+import evolution.entity.*;
 import evolution.enums.AbilityType;
 import evolution.repositories.AbilityRepository;
 import evolution.repositories.GameRepository;
+import evolution.repositories.LobbyRepository;
 import evolution.repositories.UnitRepository;
 import evolution.services.GameService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +22,7 @@ import java.util.Optional;
 @EnableScheduling
 public class Scheduler {
     private final GameRepository gameRepository;
+    private final LobbyRepository lobbyRepository;
     private final UnitRepository unitRepository;
     private final AbilityRepository abilityRepository;
     private final GameService gameService;
@@ -33,21 +32,21 @@ public class Scheduler {
 
     @Scheduled(fixedRate = 1000)
     public void updateGames() {
-//        timer++;
-//        timer %= 10000;
-//        List<Game> games = gameRepository.findAll();
-//        for (Game game : games) {
-//            for (User user : game.getUsers()) {
-//                for (Unit unit : user.getUnits()) {
-//                    if (unit.getHp() > 0) {
-//                        detectEnemy(unit, user, game.getUsers());
-//                        action(unit, user, game);
-//                    }
-//                }
-//            }
-//            game.setTimer(game.getTimer() + 1);
-//            gameRepository.save(game);
-//        }
+        List<Lobby> lobbies = lobbyRepository.findAll();
+        for (Lobby lobby : lobbies) {
+            if (lobby.getGame() != null) {
+                for (User user : lobby.getUsers()) {
+                    for (Unit unit : user.getUnits()) {
+                        if (unit.getHp() > 0) {
+                            detectEnemy(unit, user, lobby.getUsers());
+                            action(unit, user, lobby.getGame());
+                        }
+                    }
+                }
+                lobby.getGame().setTimer(lobby.getGame().getTimer() + 1);
+                gameRepository.save(lobby.getGame());
+            }
+        }
     }
 
     // todo compare to the most close enemy
