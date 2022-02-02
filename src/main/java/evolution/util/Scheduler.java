@@ -35,19 +35,19 @@ public class Scheduler {
     public void updateGames() {
 //        timer++;
 //        timer %= 10000;
-        List<Game> games = gameRepository.findAll();
-        for (Game game : games) {
-            for (User user : game.getUsers()) {
-                for (Unit unit : user.getUnits()) {
-                    if (unit.getHp() > 0) {
-                        detectEnemy(unit, user, game.getUsers());
-                        action(unit, user, game);
-                    }
-                }
-            }
-            game.setTimer(game.getTimer() + 1);
-            gameRepository.save(game);
-        }
+//        List<Game> games = gameRepository.findAll();
+//        for (Game game : games) {
+//            for (User user : game.getUsers()) {
+//                for (Unit unit : user.getUnits()) {
+//                    if (unit.getHp() > 0) {
+//                        detectEnemy(unit, user, game.getUsers());
+//                        action(unit, user, game);
+//                    }
+//                }
+//            }
+//            game.setTimer(game.getTimer() + 1);
+//            gameRepository.save(game);
+//        }
     }
 
     // todo compare to the most close enemy

@@ -19,8 +19,6 @@ import java.util.List;
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class LobbyDto extends BaseDto {
 
-    private Integer timer;
-
-    private List<UserDto> users = new ArrayList<>();
+    private Boolean filled;
 
 }

@@ -8,7 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long>, PagingAndSortingRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, String>, PagingAndSortingRepository<User, String> {
     Optional<User> findByUsername(String username);
 
     List<User> findAllByGame(Game game);

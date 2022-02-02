@@ -6,7 +6,7 @@ import evolution.entity.User;
 import evolution.mapper.LobbyMapper;
 import evolution.repositories.LobbyRepository;
 import evolution.repositories.UserRepository;
-import evolution.services.*;
+import evolution.services.LobbyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,27 +22,27 @@ public class LobbyServiceImpl implements LobbyService {
 
     private final LobbyRepository lobbyRepository;
     private final UserRepository userRepository;
-    private final AuthorizationService authorizationService;
 
 
     @Override
-    public LobbyDto findLobby() {
-        User user = authorizationService.getProfileOfCurrent();
-        Optional<Lobby> lobbyOptional = lobbyRepository.findFirstByCloseRating(user.getRating());
+    public LobbyDto findLobby(User user) {
         Lobby lobby;
-        if (!lobbyOptional.isPresent()) {
-            lobby = new Lobby();
-            lobby.setRating(user.getRating());
-            lobby.getUsers().add(user);
+        Optional<Lobby> lobbyByUser = lobbyRepository.findByUsers(user);
+        if (!lobbyByUser.isPresent()) {
+            Optional<Lobby> lobbyByRating = lobbyRepository.findFirstByCloseRating(user.getRating());
+            if (lobbyByRating.isPresent()) {
+                lobby = lobbyByRating.get();
+                user.setLobby(lobby);
+                lobby.setFilled(true);
+            } else {
+                lobby = new Lobby();
+                lobby.setRating(user.getRating());
+                user.setLobby(lobby);
+            }
             lobbyRepository.save(lobby);
-            user.setLobby(lobby);
             userRepository.save(user);
         } else {
-            lobby = lobbyOptional.get();
-            lobby.getUsers().add(user);
-            user.setLobby(lobby);
-            lobbyRepository.save(lobby);
-            userRepository.save(user);
+            lobby = lobbyByUser.get();
         }
         return LobbyMapper.INSTANCE.mapToDto(lobby);
     }

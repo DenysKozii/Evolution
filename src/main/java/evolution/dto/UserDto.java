@@ -12,17 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class UserDto extends BaseDto {
+public class UserDto {
 
     private String username;
 
-    private List<UnitDto> units = new ArrayList<>();
+    private Integer rating;
 
-    private List<AbilityDto> gameAbilities = new ArrayList<>();
+    private Integer coins;
+
+    private Integer crystals;
 
 }

@@ -19,6 +19,8 @@ public class AbilityDto extends BaseDto {
 
     private String title;
 
+    private String description;
+
     private Integer coins;
 
     private Integer crystals;

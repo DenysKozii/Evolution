@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface LobbyRepository extends JpaRepository<Lobby, Long>, PagingAndSortingRepository<Lobby, Long> {
 
-    Lobby findByUsers(User user);
+    Optional<Lobby> findByUsers(User user);
 
     @Query(value = "select * from lobbies where rating > ?1 - 100 and rating < ?1 + 100", nativeQuery = true)
     Optional<Lobby> findFirstByCloseRating(Integer rating);

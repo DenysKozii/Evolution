@@ -31,9 +31,4 @@ public class Game extends BaseEntity{
     @JoinColumn(name = "winner_id")
     private User winner;
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
-    List<User> users = new ArrayList<>();
-
 }

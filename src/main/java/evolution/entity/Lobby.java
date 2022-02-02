@@ -7,7 +7,9 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -20,9 +22,9 @@ public class Lobby extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer timer = 0;
+    private Integer rating = 0;
 
-    private Integer rating;
+    private Boolean filled = false;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
