@@ -74,15 +74,6 @@ public class AbilityServiceImpl implements AbilityService {
     }
 
     @Override
-    public void mutate(Long abilityId, User user) {
-        Ability ability = abilityRepository.findById(abilityId).orElseThrow(() -> new EntityNotFoundException(""));
-        user.getMutatedAbilities().add(ability);
-        user.getGameAbilities().remove(ability);
-        user.getGameAbilities().addAll(abilityRepository.findAllByConditionAbility(ability));
-        userRepository.save(user);
-    }
-
-    @Override
     public List<AbilityDto> getAllAvailable(User user) {
         return abilityRepository.findAllByAvailableUsers(user).stream()
                 .map(AbilityMapper.INSTANCE::mapToDto)
@@ -115,6 +106,17 @@ public class AbilityServiceImpl implements AbilityService {
         Ability ability = abilityRepository.findById(abilityId).orElseThrow(() -> new EntityNotFoundException(""));
         user.getBoughtAbilities().add(ability);
         user.getAvailableAbilities().remove(ability);
+        user.setCoins(user.getCoins() - ability.getCoins());
+        user.setCrystals(user.getCrystals() - ability.getCrystals());
+        userRepository.save(user);
+    }
+
+    @Override
+    public void mutate(Long abilityId, User user) {
+        Ability ability = abilityRepository.findById(abilityId).orElseThrow(() -> new EntityNotFoundException(""));
+        user.getMutatedAbilities().add(ability);
+        user.getGameAbilities().remove(ability);
+        user.getGameAbilities().addAll(abilityRepository.findAllByConditionAbility(ability));
         userRepository.save(user);
     }
 
