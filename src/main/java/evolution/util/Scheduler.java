@@ -2,6 +2,7 @@ package evolution.util;
 
 import evolution.entity.*;
 import evolution.enums.AbilityType;
+import evolution.enums.GameStatus;
 import evolution.repositories.AbilityRepository;
 import evolution.repositories.GameRepository;
 import evolution.repositories.LobbyRepository;
@@ -34,7 +35,7 @@ public class Scheduler {
     public void updateGames() {
         List<Lobby> lobbies = lobbyRepository.findAll();
         for (Lobby lobby : lobbies) {
-            if (lobby.getGame() != null) {
+            if (lobby.getGame() != null && lobby.getGame().getGameStatus().equals(GameStatus.RUNNING)) {
                 for (User user : lobby.getUsers()) {
                     for (Unit unit : user.getUnits()) {
                         if (unit.getHp() > 0) {
@@ -49,7 +50,6 @@ public class Scheduler {
         }
     }
 
-    // todo compare to the most close enemy
     private void detectEnemy(Unit currentUnit, User currentUser, List<User> users) {
         for (User user : users) {
             if (!user.equals(currentUser)) {
@@ -63,7 +63,6 @@ public class Scheduler {
         }
     }
 
-    // todo move to the enemy before fight
     private void action(Unit unit, User user, Game game) {
         unit.setAge(unit.getAge() + 1);
         if (unit.getAge() == 10) {

@@ -1,8 +1,8 @@
-package evolution.controllers.rest;
+package evolution.controllers;
 
-import evolution.dto.UserDto;
+import evolution.dto.LobbyDto;
 import evolution.entity.User;
-import evolution.mapper.UserMapper;
+import evolution.services.LobbyService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/user")
-public class UserRestController {
+@RequestMapping("api/lobby")
+public class LobbyRestController {
+    private final LobbyService lobbyService;
 
     @GetMapping
-    public UserDto profile(@AuthenticationPrincipal User user) {
-        return UserMapper.INSTANCE.mapToDto(user);
+    public LobbyDto findLobby(@AuthenticationPrincipal User user) {
+        return lobbyService.findLobby(user);
     }
-
 }

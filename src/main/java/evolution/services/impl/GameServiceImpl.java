@@ -37,14 +37,18 @@ public class GameServiceImpl implements GameService {
 
 
     @Override
-    public GameDto startNewGame(User user) {
+    public GameDto accept(User user) {
         Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(()->new EntityNotFoundException(""));
         Game game;
         if (lobby.getGame() != null) {
             game = lobby.getGame();
+            game.setAcceptedAmount(game.getAcceptedAmount() + 1);
+            if (game.getAcceptedAmount().equals(lobby.getUsers().size())){
+                game.setGameStatus(GameStatus.RUNNING);
+            }
         } else {
             game = new Game();
-            game.setGameStatus(GameStatus.RUNNING);
+            game.setGameStatus(GameStatus.WAITING);
             lobby.setGame(game);
         }
 
@@ -59,6 +63,15 @@ public class GameServiceImpl implements GameService {
         userRepository.save(user);
         lobbyRepository.save(lobby);
         return GameMapper.INSTANCE.mapToDto(game);
+    }
+
+    @Override
+    public void reject(User user) {
+        Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(()->new EntityNotFoundException(""));
+        Game game = lobby.getGame();
+        lobby.setGame(null);
+        lobbyRepository.save(lobby);
+        gameRepository.delete(game);
     }
 
 

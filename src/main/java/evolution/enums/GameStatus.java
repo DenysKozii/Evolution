@@ -1,6 +1,7 @@
 package evolution.enums;
 
 public enum GameStatus {
+    WAITING("waiting"),
     RUNNING("running"),
     COMPLETED("completed");
 

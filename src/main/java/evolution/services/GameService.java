@@ -7,7 +7,9 @@ import evolution.entity.User;
 
 public interface GameService {
 
-    GameDto startNewGame(User user);
+    GameDto accept(User user);
+
+    void reject(User user);
 
     void freeData();
 

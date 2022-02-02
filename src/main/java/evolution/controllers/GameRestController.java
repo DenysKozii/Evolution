@@ -1,4 +1,4 @@
-package evolution.controllers.rest;
+package evolution.controllers;
 
 import evolution.dto.GameDto;
 import evolution.entity.User;
@@ -6,7 +6,6 @@ import evolution.services.GameService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,9 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class GameRestController {
     private final GameService gameService;
 
-    @GetMapping("new")
-    public GameDto newGame(@AuthenticationPrincipal User user) {
-        return gameService.startNewGame(user);
+    @GetMapping("accept")
+    public GameDto acceptGame(@AuthenticationPrincipal User user) {
+        return gameService.accept(user);
+    }
+
+    @GetMapping("reject")
+    public void rejectGame(@AuthenticationPrincipal User user) {
+        gameService.reject(user);
     }
 
     @GetMapping

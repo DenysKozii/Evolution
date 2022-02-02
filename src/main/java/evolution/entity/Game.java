@@ -25,6 +25,8 @@ public class Game extends BaseEntity{
 
     private Integer timer = 1;
 
+    private Integer acceptedAmount = 0;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.EAGER)

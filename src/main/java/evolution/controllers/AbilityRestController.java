@@ -1,4 +1,4 @@
-package evolution.controllers.rest;
+package evolution.controllers;
 
 import evolution.entity.User;
 import evolution.services.AbilityService;
