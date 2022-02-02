@@ -11,6 +11,4 @@ public interface GameRepository extends JpaRepository<Game, Long>, PagingAndSort
 
     Optional<Game> findById(Long id);
 
-    Game findByUsers(User user);
-
 }
