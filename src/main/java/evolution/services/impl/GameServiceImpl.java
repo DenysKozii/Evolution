@@ -1,6 +1,7 @@
 package evolution.services.impl;
 
 import evolution.dto.GameDto;
+import evolution.dto.LobbyDto;
 import evolution.entity.Game;
 import evolution.entity.Lobby;
 import evolution.entity.Unit;
@@ -8,6 +9,7 @@ import evolution.entity.User;
 import evolution.enums.GameStatus;
 import evolution.exception.EntityNotFoundException;
 import evolution.mapper.GameMapper;
+import evolution.mapper.LobbyMapper;
 import evolution.repositories.GameRepository;
 import evolution.repositories.LobbyRepository;
 import evolution.repositories.UnitRepository;
@@ -38,12 +40,12 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameDto accept(User user) {
-        Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(()->new EntityNotFoundException(""));
+        Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(() -> new EntityNotFoundException(""));
         Game game;
         if (lobby.getGame() != null) {
             game = lobby.getGame();
             game.setAcceptedAmount(game.getAcceptedAmount() + 1);
-            if (game.getAcceptedAmount().equals(lobby.getUsers().size())){
+            if (game.getAcceptedAmount().equals(lobby.getUsers().size())) {
                 game.setGameStatus(GameStatus.RUNNING);
             }
         } else {
@@ -67,7 +69,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void reject(User user) {
-        Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(()->new EntityNotFoundException(""));
+        Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(() -> new EntityNotFoundException(""));
         Game game = lobby.getGame();
         lobby.setGame(null);
         lobbyRepository.save(lobby);
@@ -82,27 +84,36 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public GameDto getGame(User user) {
-        Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(()->new EntityNotFoundException(""));
+    public LobbyDto getCurrent(User user) {
+        Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(() -> new EntityNotFoundException(""));
         Game game = lobby.getGame();
         List<User> users = lobby.getUsers().stream()
                 .filter(u -> u.getUnits().stream().anyMatch(o -> o.getHp() > 0))
                 .collect(Collectors.toList());
-        if (users.size() == 1 && lobby.getUsers().size() > 1){
+        LobbyDto lobbyDto = LobbyMapper.INSTANCE.mapToDto(lobby);
+        if (users.size() == 1 && lobby.getUsers().size() > 1) {
             game.setGameStatus(GameStatus.COMPLETED);
-            game.setWinner(users.get(0));
+            User winner = users.get(0);
+            game.setWinner(winner);
             gameRepository.save(game);
             List<Unit> unitsToRemove = new ArrayList<>();
-            for (User u: lobby.getUsers()) {
+            for (User u : lobby.getUsers()) {
                 unitsToRemove.addAll(u.getUnits());
                 u.setGameAbilities(null);
                 u.setMutatedAbilities(null);
+                u.setUnits(null);
+                u.setLobby(null);
             }
-            lobbyRepository.delete(user.getLobby());
-            userRepository.saveAll(lobby.getUsers());
+            lobby.getUsers().stream().filter(u -> u.getId().equals(winner.getId())).forEach(u -> u.setRating(Math.max(0, u.getRating() - 10)));
+            lobby.setUsers(null);
+            winner.setRating(winner.getRating() + 10);
+            winner.setCoins(winner.getCoins() + 10);
+            lobbyDto = LobbyMapper.INSTANCE.mapToDto(lobby);
+            lobbyRepository.delete(lobby);
+            userRepository.saveAll(users);
             unitRepository.deleteAll(unitsToRemove);
         }
-        return GameMapper.INSTANCE.mapToDto(game);
+        return lobbyDto;
     }
 
     @Override

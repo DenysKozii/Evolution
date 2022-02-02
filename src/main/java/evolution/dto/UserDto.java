@@ -3,6 +3,7 @@ package evolution.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import evolution.entity.Unit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,5 +26,7 @@ public class UserDto {
     private Integer coins;
 
     private Integer crystals;
+
+    private List<UnitDto> units = new ArrayList<>();
 
 }

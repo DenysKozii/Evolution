@@ -29,7 +29,7 @@ public class Lobby extends BaseEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "lobby", fetch = FetchType.EAGER)
-    List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

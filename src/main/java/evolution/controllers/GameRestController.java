@@ -1,6 +1,7 @@
 package evolution.controllers;
 
 import evolution.dto.GameDto;
+import evolution.dto.LobbyDto;
 import evolution.entity.User;
 import evolution.services.GameService;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,8 @@ public class GameRestController {
     }
 
     @GetMapping
-    public GameDto getGame(@AuthenticationPrincipal User user) {
-        return gameService.getGame(user);
+    public LobbyDto getCurrent(@AuthenticationPrincipal User user) {
+        return gameService.getCurrent(user);
     }
+
 }

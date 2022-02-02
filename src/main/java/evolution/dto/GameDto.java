@@ -26,6 +26,4 @@ public class GameDto extends BaseDto{
 
     private UserDto winner;
 
-    private List<UserDto> users = new ArrayList<>();
-
 }

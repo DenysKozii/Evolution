@@ -25,7 +25,7 @@ public class Game extends BaseEntity{
 
     private Integer timer = 1;
 
-    private Integer acceptedAmount = 0;
+    private Integer acceptedAmount = 1;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

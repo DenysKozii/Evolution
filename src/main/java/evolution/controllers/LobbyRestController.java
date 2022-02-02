@@ -1,5 +1,6 @@
 package evolution.controllers;
 
+import evolution.dto.GameDto;
 import evolution.dto.LobbyDto;
 import evolution.entity.User;
 import evolution.services.LobbyService;
@@ -19,4 +20,5 @@ public class LobbyRestController {
     public LobbyDto findLobby(@AuthenticationPrincipal User user) {
         return lobbyService.findLobby(user);
     }
+
 }
