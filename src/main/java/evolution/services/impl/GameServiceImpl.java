@@ -60,7 +60,7 @@ public class GameServiceImpl implements GameService {
         user.getUnits().add(unit);
 
         gameRepository.save(game);
-        user.setGameAbilities(abilityService.getStartList());
+        user.setGameAbilities(abilityService.getDefaultBoughtAbilities());
         unitRepository.save(unit);
         userRepository.save(user);
         lobbyRepository.save(lobby);

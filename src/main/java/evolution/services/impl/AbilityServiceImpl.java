@@ -5,11 +5,13 @@ import evolution.entity.Ability;
 import evolution.entity.User;
 import evolution.enums.AbilityType;
 import evolution.exception.EntityNotFoundException;
+import evolution.mapper.AbilityMapper;
 import evolution.repositories.AbilityRepository;
 import evolution.repositories.UserRepository;
 import evolution.services.AbilityService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -27,15 +29,20 @@ public class AbilityServiceImpl implements AbilityService {
     private final AbilityRepository abilityRepository;
     private final UserRepository userRepository;
 
+    @Value("${defaultBoughtAmount}")
+    private Integer defaultBoughtAmount;
+    @Value("${defaultNewUserAmount}")
+    private Integer defaultNewUserAmount;
+
     @EventListener(ApplicationReadyEvent.class)
     @Override
     public void initialise() {
         if (abilityRepository.count() == 0) {
-            Ability division = createAbility("Ускорить деление", "Уменьшает интервал деления с 6 до 4 секунд",0, 0, AbilityType.DIVISION, null);
-            Ability fang = createAbility("Растут клыки", "Выше урон",0, 0, AbilityType.FANG, null);
-            createAbility("Хитиновый панцирь","Больше здоровья",0, 0, AbilityType.SHIELD, null);
-            createAbility("Дальше распознает жертву","Больше радиус распознавания",0, 0, AbilityType.HUNTING, fang);
-            createAbility("Двойное деление","При делении появляется не 1, а 2 круга",0, 0, AbilityType.DOUBLE_DIVISION, division);
+            Ability division = createAbility("Ускорить деление", "Уменьшает интервал деления с 6 до 4 секунд", 0, 0, AbilityType.DIVISION, null);
+            Ability fang = createAbility("Растут клыки", "Выше урон", 0, 0, AbilityType.FANG, null);
+            createAbility("Хитиновый панцирь", "Больше здоровья", 0, 0, AbilityType.SHIELD, null);
+            createAbility("Дальше распознает жертву", "Больше радиус распознавания", 0, 0, AbilityType.HUNTING, fang);
+            createAbility("Двойное деление", "При делении появляется не 1, а 2 круга", 0, 0, AbilityType.DOUBLE_DIVISION, division);
         }
     }
 
@@ -52,13 +59,23 @@ public class AbilityServiceImpl implements AbilityService {
     }
 
     @Override
-    public List<Ability> getStartList() {
-        return abilityRepository.findAll().stream().limit(3).collect(Collectors.toList());
+    public List<Ability> getDefaultBoughtAbilities() {
+        return abilityRepository.findAll().stream().limit(defaultBoughtAmount).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Ability> getDefaultAvailableAbilities() {
+        return abilityRepository.findAll().stream().skip(defaultNewUserAmount).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Ability> getNewUserAbilities() {
+        return abilityRepository.findAll().stream().limit(defaultNewUserAmount).collect(Collectors.toList());
     }
 
     @Override
     public void mutate(Long abilityId, User user) {
-        Ability ability = abilityRepository.findById(abilityId).orElseThrow(()->new EntityNotFoundException(""));
+        Ability ability = abilityRepository.findById(abilityId).orElseThrow(() -> new EntityNotFoundException(""));
         user.getMutatedAbilities().add(ability);
         user.getGameAbilities().remove(ability);
         user.getGameAbilities().addAll(abilityRepository.findAllByConditionAbility(ability));
@@ -66,10 +83,39 @@ public class AbilityServiceImpl implements AbilityService {
     }
 
     @Override
-    public List<AbilityDto> getAll(User user) {
-        List<Ability> allAbilities = abilityRepository.findAll();
-//        List<Ability> allAbilities = abilityRepository.findAll();
-        return null;
+    public List<AbilityDto> getAllAvailable(User user) {
+        return abilityRepository.findAllByAvailableUsers(user).stream()
+                .map(AbilityMapper.INSTANCE::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AbilityDto> getAllBought(User user) {
+        return abilityRepository.findAllByBoughtUsers(user).stream()
+                .map(AbilityMapper.INSTANCE::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AbilityDto> getAllMutate(User user) {
+        return abilityRepository.findAllByMutatedUsers(user).stream()
+                .map(AbilityMapper.INSTANCE::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AbilityDto> getAllGame(User user) {
+        return abilityRepository.findAllByGameUsers(user).stream()
+                .map(AbilityMapper.INSTANCE::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void buy(Long abilityId, User user) {
+        Ability ability = abilityRepository.findById(abilityId).orElseThrow(() -> new EntityNotFoundException(""));
+        user.getBoughtAbilities().add(ability);
+        user.getAvailableAbilities().remove(ability);
+        userRepository.save(user);
     }
 
 }

@@ -52,7 +52,8 @@ public class SecurityGoogleConfiguration extends WebSecurityConfigurerAdapter {
                 user.setRating(0);
                 user.setCoins(100);
                 user.setCrystals(10);
-                user.setAvailableAbilities(abilityService.getStartList());
+                user.setAvailableAbilities(abilityService.getDefaultAvailableAbilities());
+                user.setBoughtAbilities(abilityService.getNewUserAbilities());
                 userRepository.save(user);
                 return user;
             });

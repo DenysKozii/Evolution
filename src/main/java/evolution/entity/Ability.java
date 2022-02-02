@@ -38,9 +38,12 @@ public class Ability extends BaseEntity {
     @ManyToMany(mappedBy = "availableAbilities")
     private List<User> availableUsers = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "gameAbilities")
-    private List<User> gameUsers = new ArrayList<>();
+    @ManyToMany(mappedBy = "boughtAbilities")
+    private List<User> boughtUsers = new ArrayList<>();
 
     @ManyToMany(mappedBy = "mutatedAbilities")
     private List<User> mutatedUsers = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "gameAbilities")
+    private List<User> gameUsers = new ArrayList<>();
 }

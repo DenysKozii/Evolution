@@ -13,4 +13,10 @@ public interface AbilityRepository extends JpaRepository<Ability, Long>, PagingA
 
     List<Ability> findAllByConditionAbility(Ability conditionAbility);
 
+    List<Ability> findAllByAvailableUsers(User user);
+
+    List<Ability> findAllByBoughtUsers(User user);
+
+    List<Ability> findAllByGameUsers(User user);
+
 }
