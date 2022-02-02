@@ -60,6 +60,14 @@ public class User {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany
+    @JoinTable(name = "abilities_pull",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "ability_id"))
+    private List<Ability> abilitiesPull = new ArrayList<>();
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany
     @JoinTable(name = "game_abilities",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "ability_id"))
@@ -72,4 +80,5 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "ability_id"))
     private List<Ability> mutatedAbilities = new ArrayList<>();
+
 }

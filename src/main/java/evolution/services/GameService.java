@@ -12,8 +12,6 @@ public interface GameService {
 
     void reject(User user);
 
-    void freeData();
-
     LobbyDto getCurrent(User user);
 
     Unit newUnit(Double x, Double y, Double bodyRadius, Integer hp, Integer damage, Integer speed, Double detectRadius);

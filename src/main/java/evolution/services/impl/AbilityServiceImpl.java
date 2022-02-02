@@ -1,5 +1,6 @@
 package evolution.services.impl;
 
+import evolution.dto.AbilityDto;
 import evolution.entity.Ability;
 import evolution.entity.User;
 import evolution.enums.AbilityType;
@@ -62,6 +63,13 @@ public class AbilityServiceImpl implements AbilityService {
         user.getGameAbilities().remove(ability);
         user.getGameAbilities().addAll(abilityRepository.findAllByConditionAbility(ability));
         userRepository.save(user);
+    }
+
+    @Override
+    public List<AbilityDto> getAll(User user) {
+        List<Ability> allAbilities = abilityRepository.findAll();
+//        List<Ability> allAbilities = abilityRepository.findAll();
+        return null;
     }
 
 }

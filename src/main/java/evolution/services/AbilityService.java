@@ -1,5 +1,6 @@
 package evolution.services;
 
+import evolution.dto.AbilityDto;
 import evolution.entity.Ability;
 import evolution.entity.User;
 
@@ -12,4 +13,6 @@ public interface AbilityService {
     List<Ability> getStartList();
 
     void mutate(Long abilityId, User user);
+
+    List<AbilityDto> getAll(User user);
 }

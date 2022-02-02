@@ -76,13 +76,6 @@ public class GameServiceImpl implements GameService {
         gameRepository.delete(game);
     }
 
-
-    @Override
-    public void freeData() {
-        List<Game> games = gameRepository.findAll();
-        gameRepository.deleteAll(games);
-    }
-
     @Override
     public LobbyDto getCurrent(User user) {
         Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(() -> new EntityNotFoundException(""));
