@@ -10,6 +10,7 @@ import evolution.repositories.AbilityRepository;
 import evolution.repositories.UserRepository;
 import evolution.services.AbilityService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AbilityServiceImpl implements AbilityService {
 
     private final AbilityRepository abilityRepository;

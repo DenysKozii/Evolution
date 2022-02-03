@@ -55,7 +55,7 @@ public class GameServiceImpl implements GameService {
         }
 
         double userIndex = lobby.getUsers().indexOf(user);
-        Unit unit = newUnit(userIndex * 50 * Math.pow(-1, userIndex), userIndex * 50 * Math.pow(-1, userIndex), 1.0, 100, 50, 10, 40.0);
+        Unit unit = newUnit(userIndex * 100 * Math.pow(-1, userIndex), userIndex * 100 * Math.pow(-1, userIndex), 1.0, 100, 50, 10, 40.0);
         unit.setUser(user);
         user.getUnits().add(unit);
 

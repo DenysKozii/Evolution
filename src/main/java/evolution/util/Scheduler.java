@@ -47,6 +47,7 @@ public class Scheduler {
                 lobby.getGame().setTimer(lobby.getGame().getTimer() + 1);
                 gameRepository.save(lobby.getGame());
             }
+            // todo
         }
     }
 
@@ -113,10 +114,10 @@ public class Scheduler {
             double cos = Math.cos(angle);
             double newX = unit.getX() + Math.random() * unit.getSpeed();
             double newY = unit.getY() + Math.random() * unit.getSpeed();
-            newX = Math.max(cos * (newX - unit.getX()) - sin * (newY - unit.getY()) + unit.getX(), -100);
-            newX = Math.min(newX, 100);
-            newY = Math.max(sin * (newX - unit.getX()) + cos * (newY - unit.getY()) + unit.getY(), -100);
-            newY = Math.min(newY, 100);
+            newX = Math.max(cos * (newX - unit.getX()) - sin * (newY - unit.getY()) + unit.getX(), -200);
+            newX = Math.min(newX, 200);
+            newY = Math.max(sin * (newX - unit.getX()) + cos * (newY - unit.getY()) + unit.getY(), -200);
+            newY = Math.min(newY, 200);
             unit.setX(newX);
             unit.setY(newY);
         } else {
