@@ -94,7 +94,7 @@ public class AbilityServiceImpl implements AbilityService {
     }
 
     @Override
-    public List<AbilityDto> getAllMutate(UserDto userDto) {
+    public List<AbilityDto> getAllMutated(UserDto userDto) {
         User user = userRepository.findByUsername(userDto.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         return abilityRepository.findAllByMutatedUsers(user).stream()

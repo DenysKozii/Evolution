@@ -2,7 +2,6 @@ package evolution.controllers;
 
 import evolution.dto.AbilityDto;
 import evolution.dto.UserDto;
-import evolution.entity.User;
 import evolution.services.AbilityService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,9 +24,9 @@ public class AbilityRestController {
         return abilityService.getAllBought(user);
     }
 
-    @GetMapping("mutate")
-    public List<AbilityDto> allAbilitiesToMutate(@AuthenticationPrincipal UserDto user) {
-        return abilityService.getAllMutate(user);
+    @GetMapping("mutated")
+    public List<AbilityDto> allAbilitiesMutated(@AuthenticationPrincipal UserDto user) {
+        return abilityService.getAllMutated(user);
     }
 
     @GetMapping("game")
