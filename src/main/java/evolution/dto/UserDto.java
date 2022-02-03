@@ -31,8 +31,6 @@ public class UserDto extends BaseDto implements UserDetails {
 
     private Integer crystals;
 
-    private List<UnitDto> units = new ArrayList<>();
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
