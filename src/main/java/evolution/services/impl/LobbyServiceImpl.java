@@ -32,7 +32,7 @@ public class LobbyServiceImpl implements LobbyService {
                 .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         Lobby lobby;
         Optional<Lobby> lobbyByUser = lobbyRepository.findByUsers(user);
-        if (lobbyByUser.isEmpty()) {
+        if (!lobbyByUser.isPresent()) {
             Optional<Lobby> lobbyByRating = lobbyRepository.findFirstByCloseRating(user.getRating());
             if (lobbyByRating.isPresent()) {
                 lobby = lobbyByRating.get();

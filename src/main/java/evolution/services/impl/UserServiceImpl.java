@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isEmpty()) {
+        if (!userOptional.isPresent()) {
             User user = new User();
             user.setRole(Role.USER);
             user.setUsername(username);
