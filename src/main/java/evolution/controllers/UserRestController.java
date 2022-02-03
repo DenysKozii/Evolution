@@ -49,7 +49,7 @@ public class UserRestController {
                 }
             }
             HttpHeaders headers = new HttpHeaders();
-            headers.setBasicAuth(jwtProvider.generateToken(username));
+            headers.setBearerAuth(jwtProvider.generateToken(username));
             return new ResponseEntity<>(headers, HttpStatus.OK);
         }
     }
