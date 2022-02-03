@@ -36,7 +36,7 @@ public class UserRestController {
     }
 
     @PostMapping
-    public ResponseEntity<String> googleLoginPost(@RequestParam String token) throws IOException {
+    public ResponseEntity<String> googleLoginPost(@RequestBody String token) throws IOException {
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
             HttpUriRequest request = new HttpGet("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" + token);
             HttpResponse response = client.execute(request);
