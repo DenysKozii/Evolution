@@ -1,6 +1,7 @@
 package evolution.services.impl;
 
 import evolution.dto.AbilityDto;
+import evolution.dto.UserDto;
 import evolution.entity.Ability;
 import evolution.entity.User;
 import evolution.enums.AbilityType;
@@ -75,35 +76,45 @@ public class AbilityServiceImpl implements AbilityService {
     }
 
     @Override
-    public List<AbilityDto> getAllAvailable(User user) {
+    public List<AbilityDto> getAllAvailable(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         return abilityRepository.findAllByAvailableUsers(user).stream()
                 .map(AbilityMapper.INSTANCE::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<AbilityDto> getAllBought(User user) {
+    public List<AbilityDto> getAllBought(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         return abilityRepository.findAllByBoughtUsers(user).stream()
                 .map(AbilityMapper.INSTANCE::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<AbilityDto> getAllMutate(User user) {
+    public List<AbilityDto> getAllMutate(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         return abilityRepository.findAllByMutatedUsers(user).stream()
                 .map(AbilityMapper.INSTANCE::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<AbilityDto> getAllGame(User user) {
+    public List<AbilityDto> getAllGame(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         return abilityRepository.findAllByGameUsers(user).stream()
                 .map(AbilityMapper.INSTANCE::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void buy(Long abilityId, User user) {
+    public void buy(Long abilityId, UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         Ability ability = abilityRepository.findById(abilityId).orElseThrow(() -> new EntityNotFoundException(""));
         user.getBoughtAbilities().add(ability);
         user.getAvailableAbilities().remove(ability);
@@ -113,7 +124,9 @@ public class AbilityServiceImpl implements AbilityService {
     }
 
     @Override
-    public void mutate(Long abilityId, User user) {
+    public void mutate(Long abilityId, UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         Ability ability = abilityRepository.findById(abilityId).orElseThrow(() -> new EntityNotFoundException(""));
         user.getMutatedAbilities().add(ability);
         user.getGameAbilities().remove(ability);

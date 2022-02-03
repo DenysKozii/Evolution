@@ -1,6 +1,7 @@
 package evolution.services;
 
 import evolution.dto.AbilityDto;
+import evolution.dto.UserDto;
 import evolution.entity.Ability;
 import evolution.entity.User;
 
@@ -16,15 +17,15 @@ public interface AbilityService {
 
     List<Ability> getNewUserAbilities();
 
-    void mutate(Long abilityId, User user);
+    void mutate(Long abilityId, UserDto user);
 
-    List<AbilityDto> getAllAvailable(User user);
+    List<AbilityDto> getAllAvailable(UserDto user);
 
-    List<AbilityDto> getAllBought(User user);
+    List<AbilityDto> getAllBought(UserDto user);
 
-    List<AbilityDto> getAllMutate(User user);
+    List<AbilityDto> getAllMutate(UserDto user);
 
-    List<AbilityDto> getAllGame(User user);
+    List<AbilityDto> getAllGame(UserDto user);
 
-    void buy(Long abilityId, User user);
+    void buy(Long abilityId, UserDto user);
 }

@@ -2,6 +2,7 @@ package evolution.services.impl;
 
 import evolution.dto.GameDto;
 import evolution.dto.LobbyDto;
+import evolution.dto.UserDto;
 import evolution.entity.Game;
 import evolution.entity.Lobby;
 import evolution.entity.Unit;
@@ -39,7 +40,9 @@ public class GameServiceImpl implements GameService {
 
 
     @Override
-    public GameDto accept(User user) {
+    public GameDto accept(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(() -> new EntityNotFoundException(""));
         Game game;
         if (lobby.getGame() != null) {
@@ -68,7 +71,9 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void reject(User user) {
+    public void reject(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(() -> new EntityNotFoundException(""));
         Game game = lobby.getGame();
         lobby.setGame(null);
@@ -77,7 +82,9 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public LobbyDto getCurrent(User user) {
+    public LobbyDto getCurrent(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(() -> new EntityNotFoundException(""));
         Game game = lobby.getGame();
         List<User> users = lobby.getUsers().stream()

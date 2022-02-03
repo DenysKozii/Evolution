@@ -17,7 +17,8 @@ import java.util.*;
 public class User {
     @Id
     @Column(unique = true, nullable = false, updatable = false)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NonNull
     @Column(unique = true, nullable = false)

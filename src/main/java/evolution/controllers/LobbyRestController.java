@@ -2,6 +2,7 @@ package evolution.controllers;
 
 import evolution.dto.GameDto;
 import evolution.dto.LobbyDto;
+import evolution.dto.UserDto;
 import evolution.entity.User;
 import evolution.services.LobbyService;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ public class LobbyRestController {
     private final LobbyService lobbyService;
 
     @GetMapping
-    public LobbyDto findLobby(@AuthenticationPrincipal User user) {
+    public LobbyDto findLobby(@AuthenticationPrincipal UserDto user) {
         return lobbyService.findLobby(user);
     }
 

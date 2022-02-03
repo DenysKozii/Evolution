@@ -1,9 +1,9 @@
 package evolution.services;
 
-import evolution.dto.UserDto;
-import evolution.entity.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
-    UserDto getUser(User user);
+    void register(String username);
+
 }

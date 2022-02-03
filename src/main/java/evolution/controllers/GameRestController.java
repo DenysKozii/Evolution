@@ -2,6 +2,7 @@ package evolution.controllers;
 
 import evolution.dto.GameDto;
 import evolution.dto.LobbyDto;
+import evolution.dto.UserDto;
 import evolution.entity.User;
 import evolution.services.GameService;
 import lombok.AllArgsConstructor;
@@ -17,17 +18,17 @@ public class GameRestController {
     private final GameService gameService;
 
     @GetMapping("accept")
-    public GameDto acceptGame(@AuthenticationPrincipal User user) {
+    public GameDto acceptGame(@AuthenticationPrincipal UserDto user) {
         return gameService.accept(user);
     }
 
     @GetMapping("reject")
-    public void rejectGame(@AuthenticationPrincipal User user) {
+    public void rejectGame(@AuthenticationPrincipal UserDto user) {
         gameService.reject(user);
     }
 
     @GetMapping
-    public LobbyDto getCurrent(@AuthenticationPrincipal User user) {
+    public LobbyDto getCurrent(@AuthenticationPrincipal UserDto user) {
         return gameService.getCurrent(user);
     }
 

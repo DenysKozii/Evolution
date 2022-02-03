@@ -1,6 +1,7 @@
 package evolution.controllers;
 
 import evolution.dto.AbilityDto;
+import evolution.dto.UserDto;
 import evolution.entity.User;
 import evolution.services.AbilityService;
 import lombok.AllArgsConstructor;
@@ -16,31 +17,31 @@ public class AbilityRestController {
     private final AbilityService abilityService;
 
     @GetMapping("available")
-    public List<AbilityDto> allAvailableAbilities(@AuthenticationPrincipal User user) {
+    public List<AbilityDto> allAvailableAbilities(@AuthenticationPrincipal UserDto user) {
         return abilityService.getAllAvailable(user);
     }
     @GetMapping("bought")
-    public List<AbilityDto> allBoughtAbilities(@AuthenticationPrincipal User user) {
+    public List<AbilityDto> allBoughtAbilities(@AuthenticationPrincipal UserDto user) {
         return abilityService.getAllBought(user);
     }
 
     @GetMapping("mutate")
-    public List<AbilityDto> allAbilitiesToMutate(@AuthenticationPrincipal User user) {
+    public List<AbilityDto> allAbilitiesToMutate(@AuthenticationPrincipal UserDto user) {
         return abilityService.getAllMutate(user);
     }
 
     @GetMapping("game")
-    public List<AbilityDto> allAbilitiesToMutateAvailable(@AuthenticationPrincipal User user) {
+    public List<AbilityDto> allAbilitiesToMutateAvailable(@AuthenticationPrincipal UserDto user) {
         return abilityService.getAllGame(user);
     }
 
     @PostMapping("mutate/{abilityId}")
-    public void mutateAbility(@AuthenticationPrincipal User user, @PathVariable Long abilityId) {
+    public void mutateAbility(@AuthenticationPrincipal UserDto user, @PathVariable Long abilityId) {
         abilityService.mutate(abilityId, user);
     }
 
     @PostMapping("buy/{abilityId}")
-    public void buyAbility(@AuthenticationPrincipal User user, @PathVariable Long abilityId) {
+    public void buyAbility(@AuthenticationPrincipal UserDto user, @PathVariable Long abilityId) {
         abilityService.buy(abilityId, user);
     }
 

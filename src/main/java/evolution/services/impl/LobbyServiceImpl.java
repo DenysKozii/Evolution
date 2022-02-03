@@ -1,8 +1,10 @@
 package evolution.services.impl;
 
 import evolution.dto.LobbyDto;
+import evolution.dto.UserDto;
 import evolution.entity.Lobby;
 import evolution.entity.User;
+import evolution.exception.EntityNotFoundException;
 import evolution.mapper.LobbyMapper;
 import evolution.repositories.LobbyRepository;
 import evolution.repositories.UserRepository;
@@ -25,10 +27,12 @@ public class LobbyServiceImpl implements LobbyService {
 
 
     @Override
-    public LobbyDto findLobby(User user) {
+    public LobbyDto findLobby(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         Lobby lobby;
         Optional<Lobby> lobbyByUser = lobbyRepository.findByUsers(user);
-        if (!lobbyByUser.isPresent()) {
+        if (lobbyByUser.isEmpty()) {
             Optional<Lobby> lobbyByRating = lobbyRepository.findFirstByCloseRating(user.getRating());
             if (lobbyByRating.isPresent()) {
                 lobby = lobbyByRating.get();
