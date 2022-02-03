@@ -1,11 +1,8 @@
 package evolution.controllers;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.google.api.client.http.HttpTransport;
 import evolution.dto.UserDto;
-import evolution.entity.User;
 import evolution.jwt.JwtProvider;
-import evolution.services.UserService;
+import evolution.services.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -27,12 +24,12 @@ import java.io.InputStreamReader;
 @RequestMapping("api/user")
 public class UserRestController {
 
-    private UserService userService;
+    private UserServiceImpl userService;
     private JwtProvider jwtProvider;
 
     @GetMapping
     public UserDto profile(@AuthenticationPrincipal UserDto user) {
-        return user;
+        return userService.loadUserByUsername(user.getUsername());
     }
 
     @PostMapping
