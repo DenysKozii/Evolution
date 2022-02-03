@@ -27,7 +27,7 @@ public class UserRestController {
     private UserServiceImpl userService;
     private JwtProvider jwtProvider;
 
-    @GetMapping
+    @GetMapping("profile")
     public UserDto profile(@AuthenticationPrincipal UserDto user) {
         return userService.loadUserByUsername(user.getUsername());
     }
