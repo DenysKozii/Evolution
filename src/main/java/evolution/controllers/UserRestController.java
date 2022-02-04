@@ -29,9 +29,6 @@ public class UserRestController {
 
     @GetMapping("profile")
     public UserDto profile(@AuthenticationPrincipal UserDto user) {
-        System.out.println("Username = " + user.getUsername());
-        System.out.println("Username = " + user.getUsername());
-        System.out.println("Username = " + user.getUsername());
         return userService.loadUserByUsername(user.getUsername());
     }
 
