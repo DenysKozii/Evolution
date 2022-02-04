@@ -25,6 +25,8 @@ public class UserDto extends BaseDto implements UserDetails {
 
     private String username;
 
+    private String email;
+
     private Integer rating;
 
     private Integer coins;

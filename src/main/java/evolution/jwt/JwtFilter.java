@@ -4,9 +4,6 @@ package evolution.jwt;
 import evolution.dto.UserDto;
 import evolution.services.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -36,8 +33,8 @@ public class JwtFilter extends GenericFilterBean {
             throws IOException, ServletException {
         String token = getTokenFromRequest((HttpServletRequest) servletRequest);
         if ((token != null) && jwtProvider.validateToken(token)) {
-            String login = jwtProvider.getLoginFromToken(token);
-            UserDto user = userService.loadUserByUsername(login);
+            String email = jwtProvider.getEmailFromToken(token);
+            UserDto user = userService.loadUserByUsername(email);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }

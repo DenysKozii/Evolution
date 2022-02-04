@@ -28,8 +28,8 @@ public class LobbyServiceImpl implements LobbyService {
 
     @Override
     public LobbyDto findLobby(UserDto userDto) {
-        User user = userRepository.findByUsername(userDto.getUsername())
-                .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
+        User user = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         Lobby lobby;
         Optional<Lobby> lobbyByUser = lobbyRepository.findByUsers(user);
         if (!lobbyByUser.isPresent()) {

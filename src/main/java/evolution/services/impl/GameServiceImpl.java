@@ -41,7 +41,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameDto accept(UserDto userDto) {
-        User user = userRepository.findByUsername(userDto.getUsername())
+        User user = userRepository.findById(userDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(() -> new EntityNotFoundException(""));
         Game game;
@@ -72,7 +72,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void reject(UserDto userDto) {
-        User user = userRepository.findByUsername(userDto.getUsername())
+        User user = userRepository.findById(userDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(() -> new EntityNotFoundException(""));
         Game game = lobby.getGame();
@@ -83,7 +83,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public LobbyDto getCurrent(UserDto userDto) {
-        User user = userRepository.findByUsername(userDto.getUsername())
+        User user = userRepository.findById(userDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User with username " + userDto.getUsername() + " doesn't exists!"));
         Lobby lobby = lobbyRepository.findByUsers(user).orElseThrow(() -> new EntityNotFoundException(""));
         Game game = lobby.getGame();

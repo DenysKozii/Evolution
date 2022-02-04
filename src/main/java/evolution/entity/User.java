@@ -20,12 +20,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
-    @Column(unique = true, nullable = false)
-    @NotBlank(message = "Must not be empty")
-    @Size(min = 2, max = 20,
-            message = "Length of first name should be between 2 and 20")
+    @Column(nullable = false)
     private String username;
+
+    @Column(unique = true, nullable = false)
+    private String email;
 
     private Integer rating;
 

@@ -10,6 +10,7 @@ import evolution.services.AbilityService;
 import evolution.services.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +25,13 @@ public class UserServiceImpl implements UserService {
     private final AbilityService abilityService;
 
     @Override
-    public void register(String username) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
+    public void register(String email, String username) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
         if (!userOptional.isPresent()) {
             User user = new User();
             user.setRole(Role.USER);
             user.setUsername(username);
+            user.setEmail(email);
             user.setRating(0);
             user.setCoins(100);
             user.setCrystals(10);
@@ -40,9 +42,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User with username " + username + " doesn't exists!"));
+    public UserDto loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User with email " + email + " doesn't exists!"));
         return UserMapper.INSTANCE.mapToDto(user);
     }
 }
