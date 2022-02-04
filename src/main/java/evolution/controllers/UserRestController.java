@@ -4,6 +4,7 @@ import evolution.dto.UserDto;
 import evolution.jwt.JwtProvider;
 import evolution.services.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -20,27 +21,30 @@ import org.springframework.web.bind.annotation.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("api/user")
 public class UserRestController {
 
     private UserServiceImpl userService;
     private JwtProvider jwtProvider;
 
-    @Value("${googleapis}")
-    private String googleapis;
-
     @GetMapping("profile")
     public UserDto profile(@AuthenticationPrincipal UserDto user) {
         return user;
     }
 
+    @GetMapping("friends")
+    public List<UserDto> friends(@AuthenticationPrincipal UserDto user) {
+        return userService.getFriends(user);
+    }
+
     @PostMapping
     public String googleLoginPost(@RequestBody String token) throws IOException {
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
-            HttpUriRequest request = new HttpGet(googleapis + token);
+            HttpUriRequest request = new HttpGet("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" + token);
             HttpResponse response = client.execute(request);
             BufferedReader bufReader = new BufferedReader(new InputStreamReader(
                     response.getEntity().getContent()));
@@ -61,7 +65,7 @@ public class UserRestController {
     }
 
     @PostMapping("login")
-    public String loginPost(@RequestBody String email, @RequestBody String username) {
+    public String loginPost(@RequestParam String email, @RequestParam String username) {
         userService.register(email, username);
         return jwtProvider.generateToken(email);
     }

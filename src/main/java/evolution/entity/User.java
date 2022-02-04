@@ -26,6 +26,8 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
+    private Integer code;
+
     private Integer rating;
 
     private Integer coins;
@@ -48,6 +50,14 @@ public class User {
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Unit> units = new ArrayList<>();
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_friend",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id", referencedColumnName = "id"))
+    private List<User> friends = new ArrayList<>();
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

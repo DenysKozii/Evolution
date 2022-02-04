@@ -47,7 +47,6 @@
 //                lobby.getGame().setTimer(lobby.getGame().getTimer() + 1);
 //                gameRepository.save(lobby.getGame());
 //            }
-//            // todo
 //        }
 //    }
 //

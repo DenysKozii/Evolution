@@ -130,7 +130,7 @@ public class AbilityServiceImpl implements AbilityService {
         Ability ability = abilityRepository.findById(abilityId).orElseThrow(() -> new EntityNotFoundException(""));
         user.getMutatedAbilities().add(ability);
         user.getGameAbilities().remove(ability);
-        List<Ability> abilities = abilityRepository.findAllByConditionAbility(ability).stream()
+        List<Ability> abilities = abilityRepository.findAllByConditionAbilities(ability).stream()
                 .filter(a -> user.getGameAbilities()
                         .containsAll(a.getConditionAbilities()))
                 .collect(Collectors.toList());
