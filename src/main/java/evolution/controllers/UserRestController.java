@@ -49,8 +49,7 @@ public class UserRestController {
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
             HttpUriRequest request = new HttpGet(GOOGLE_API + token);
             HttpResponse response = client.execute(request);
-            BufferedReader bufReader = new BufferedReader(new InputStreamReader(
-                    response.getEntity().getContent()));
+            BufferedReader bufReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String line;
             String username = "";
             String email = "";
@@ -63,7 +62,7 @@ public class UserRestController {
                 }
             }
             userService.register(email, username);
-            return jwtProvider.generateToken(token);
+            return jwtProvider.generateToken(email);
         }
     }
 
