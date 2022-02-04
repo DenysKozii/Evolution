@@ -31,9 +31,11 @@ public class Ability extends BaseEntity {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "condition_ability_id", referencedColumnName = "id")
-    private Ability conditionAbility;
+    @ManyToMany
+    @JoinTable(name = "condition_abilities",
+            joinColumns = @JoinColumn(name = "ability_id"),
+            inverseJoinColumns = @JoinColumn(name = "condition_id"))
+    private List<Ability> conditionAbilities = new ArrayList<>();
 
     @ManyToMany(mappedBy = "availableAbilities")
     private List<User> availableUsers = new ArrayList<>();

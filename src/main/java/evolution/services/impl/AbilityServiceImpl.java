@@ -1,5 +1,6 @@
 package evolution.services.impl;
 
+import com.google.common.collect.ImmutableList;
 import evolution.dto.AbilityDto;
 import evolution.dto.UserDto;
 import evolution.entity.Ability;
@@ -39,22 +40,22 @@ public class AbilityServiceImpl implements AbilityService {
     @Override
     public void initialise() {
         if (abilityRepository.count() == 0) {
-            Ability division = createAbility("Ускорить деление", "Уменьшает интервал деления с 6 до 4 секунд", 0, 0, AbilityType.DIVISION, null);
-            Ability fang = createAbility("Растут клыки", "Выше урон", 0, 0, AbilityType.FANG, null);
-            createAbility("Хитиновый панцирь", "Больше здоровья", 0, 0, AbilityType.SHIELD, null);
-            createAbility("Дальше распознает жертву", "Больше радиус распознавания", 0, 0, AbilityType.HUNTING, fang);
-            createAbility("Двойное деление", "При делении появляется не 1, а 2 круга", 0, 0, AbilityType.DOUBLE_DIVISION, division);
+            Ability division = createAbility("Ускорить деление", "Уменьшает интервал деления с 6 до 4 секунд", 0, 0, AbilityType.DIVISION, ImmutableList.of());
+            Ability fang = createAbility("Растут клыки", "Выше урон", 0, 0, AbilityType.FANG, ImmutableList.of());
+            createAbility("Хитиновый панцирь", "Больше здоровья", 0, 0, AbilityType.SHIELD, ImmutableList.of());
+            createAbility("Дальше распознает жертву", "Больше радиус распознавания", 0, 0, AbilityType.HUNTING, ImmutableList.of(fang));
+            createAbility("Двойное деление", "При делении появляется не 1, а 2 круга", 0, 0, AbilityType.DOUBLE_DIVISION, ImmutableList.of(division));
         }
     }
 
-    private Ability createAbility(String title, String description, Integer coins, Integer crystals, AbilityType type, Ability ability) {
+    private Ability createAbility(String title, String description, Integer coins, Integer crystals, AbilityType type, List<Ability> abilities) {
         Ability newAbility = new Ability();
         newAbility.setTitle(title);
         newAbility.setDescription(description);
         newAbility.setCoins(coins);
         newAbility.setCrystals(crystals);
         newAbility.setType(type);
-        newAbility.setConditionAbility(ability);
+        newAbility.getConditionAbilities().addAll(abilities);
         abilityRepository.save(newAbility);
         return newAbility;
     }
@@ -129,7 +130,11 @@ public class AbilityServiceImpl implements AbilityService {
         Ability ability = abilityRepository.findById(abilityId).orElseThrow(() -> new EntityNotFoundException(""));
         user.getMutatedAbilities().add(ability);
         user.getGameAbilities().remove(ability);
-        user.getGameAbilities().addAll(abilityRepository.findAllByConditionAbility(ability));
+        List<Ability> abilities = abilityRepository.findAllByConditionAbility(ability).stream()
+                .filter(a -> user.getGameAbilities()
+                        .containsAll(a.getConditionAbilities()))
+                .collect(Collectors.toList());
+        user.getGameAbilities().addAll(abilities);
         userRepository.save(user);
     }
 
