@@ -16,7 +16,7 @@ import java.util.Date;
 @Component
 public class JwtProvider {
 
-    @Value("$(jwt.secret)")
+    @Value("${jwt.token.secret}")
     private String jwtSecret;
     private final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
