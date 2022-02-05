@@ -48,6 +48,12 @@ public class User {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @ManyToOne
+    @JoinColumn(name = "skin_id")
+    private Skin currentSkin;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Unit> units = new ArrayList<>();
 
@@ -90,5 +96,13 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "ability_id"))
     private List<Ability> gameAbilities = new ArrayList<>();
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany
+    @JoinTable(name = "user_skins",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "skin_id"))
+    private List<Skin> skins = new ArrayList<>();
 
 }
