@@ -53,6 +53,7 @@ public class LobbyServiceImpl implements LobbyService {
         }
         LobbyDto lobbyDto = LobbyMapper.INSTANCE.mapToDto(lobby);
         lobby.getUsers().forEach(u -> lobbyDto.getUsers().add(new UserLobbyDto(u.getUsername(), u.getPeerId())));
+
         return lobbyDto;
     }
 
