@@ -4,17 +4,16 @@ import evolution.dto.UserDto;
 import evolution.jwt.JwtProvider;
 import evolution.services.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,11 +27,23 @@ import java.util.List;
 @RequestMapping("api/user")
 public class UserRestController {
 
-    private UserServiceImpl userService;
-    private JwtProvider jwtProvider;
+    private final UserServiceImpl userService;
+    private final JwtProvider jwtProvider;
     private static final String GOOGLE_API = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=";
     private static final String GIVEN_NAME = "given_name";
     private static final String EMAIL = "email";
+
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
+    @MessageMapping("/secured/room")
+    public void sendSpecific(
+            @Payload Message msg,
+            @AuthenticationPrincipal UserDto user,
+            @Header("simpSessionId") String sessionId) {
+        String message = "hello world!";
+        simpMessagingTemplate.convertAndSendToUser(user.getEmail(), "/secured/user/queue/specific-user", message);
+    }
+
 
     @GetMapping("profile")
     public UserDto profile(@AuthenticationPrincipal UserDto user) {

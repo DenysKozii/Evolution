@@ -43,6 +43,7 @@ public class LobbyServiceImpl implements LobbyService {
                 lobby.setRating(user.getRating());
                 user.setLobby(lobby);
             }
+            lobby.getUsers().add(user);
             user.setPeerId(peerId);
             lobbyRepository.save(lobby);
             userRepository.save(user);
@@ -85,6 +86,8 @@ public class LobbyServiceImpl implements LobbyService {
         }
         lobby.setFilled(false);
         lobby.getUsers().remove(user);
+        user.setLobby(null);
+        userRepository.save(user);
         if (lobby.getUsers().isEmpty()){
             lobbyRepository.delete(lobby);
         } else {
