@@ -14,8 +14,8 @@ public class LobbyRestController {
     private final LobbyService lobbyService;
 
     @GetMapping
-    public LobbyDto find(@AuthenticationPrincipal UserDto user, @RequestParam String peerId) {
-        return lobbyService.findLobby(user, peerId);
+    public LobbyDto find(@AuthenticationPrincipal UserDto user) {
+        return lobbyService.findLobby(user);
     }
 
     @PostMapping("cancel")

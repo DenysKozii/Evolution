@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
             user.setUsername(username);
             user.setEmail(email);
             user.setCode(usernameCode);
+            user.setPeerId(generatePeerId());
             user.setRating(0);
             user.setCoins(100);
             user.setCrystals(10);
@@ -42,6 +44,10 @@ public class UserServiceImpl implements UserService {
             user.setBoughtAbilities(abilityService.getNewUserAbilities());
             userRepository.save(user);
         }
+    }
+
+    private String generatePeerId(){
+        return UUID.randomUUID().toString();
     }
 
     @Override

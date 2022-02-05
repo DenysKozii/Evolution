@@ -2,7 +2,6 @@ package evolution.services.impl;
 
 import evolution.dto.LobbyDto;
 import evolution.dto.UserDto;
-import evolution.dto.UserLobbyDto;
 import evolution.entity.Lobby;
 import evolution.entity.User;
 import evolution.exception.EntityNotFoundException;
@@ -28,7 +27,7 @@ public class LobbyServiceImpl implements LobbyService {
 
 
     @Override
-    public LobbyDto findLobby(UserDto userDto, String peerId) {
+    public LobbyDto findLobby(UserDto userDto) {
         User user = userRepository.findById(userDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         Lobby lobby;
@@ -46,16 +45,12 @@ public class LobbyServiceImpl implements LobbyService {
                 user.setLobby(lobby);
             }
             lobby.getUsers().add(user);
-            user.setPeerId(peerId);
             lobbyRepository.save(lobby);
             userRepository.save(user);
         } else {
             lobby = lobbyByUser.get();
         }
-        LobbyDto lobbyDto = LobbyMapper.INSTANCE.mapToDto(lobby);
-//        lobby.getUsers().forEach(u -> lobbyDto.getUsers().add(new UserLobbyDto(u.getUsername(), u.getPeerId())));
-        log.info("lobby = " + lobbyDto.toString());
-        return lobbyDto;
+        return LobbyMapper.INSTANCE.mapToDto(lobby);
     }
 
     @Override

@@ -6,7 +6,7 @@ import evolution.dto.UserDto;
 
 public interface LobbyService {
 
-    LobbyDto findLobby(UserDto user, String peerId);
+    LobbyDto findLobby(UserDto user);
 
     boolean invite(UserDto user, String friendUsername, Integer code);
 
