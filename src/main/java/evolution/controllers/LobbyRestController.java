@@ -14,7 +14,7 @@ public class LobbyRestController {
     private final LobbyService lobbyService;
 
     @GetMapping("{peerId}")
-    public LobbyDto find(@AuthenticationPrincipal UserDto user, @PathVariable String peerId) {
+    public LobbyDto find(@AuthenticationPrincipal UserDto user, @RequestParam String peerId) {
         return lobbyService.findLobby(user, peerId);
     }
 
