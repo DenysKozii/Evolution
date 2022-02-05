@@ -75,7 +75,7 @@ public class LobbyServiceImpl implements LobbyService {
 
     // todo check all conditions in the ticket
     @Override
-    public boolean cancelLobby(UserDto userDto) {
+    public boolean cancel(UserDto userDto) {
         User user = userRepository.findById(userDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         Lobby lobby = user.getLobby();
