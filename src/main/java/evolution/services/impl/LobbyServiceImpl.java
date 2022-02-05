@@ -2,6 +2,7 @@ package evolution.services.impl;
 
 import evolution.dto.LobbyDto;
 import evolution.dto.UserDto;
+import evolution.dto.UserLobbyDto;
 import evolution.entity.Lobby;
 import evolution.entity.User;
 import evolution.exception.EntityNotFoundException;
@@ -50,7 +51,9 @@ public class LobbyServiceImpl implements LobbyService {
         } else {
             lobby = lobbyByUser.get();
         }
-        return LobbyMapper.INSTANCE.mapToDto(lobby);
+        LobbyDto lobbyDto = LobbyMapper.INSTANCE.mapToDto(lobby);
+        lobby.getUsers().forEach(u -> lobbyDto.getUsers().add(new UserLobbyDto(u.getUsername(), u.getPeerId())));
+        return lobbyDto;
     }
 
     @Override
@@ -59,13 +62,13 @@ public class LobbyServiceImpl implements LobbyService {
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         User acceptor = userRepository.findByUsernameAndCode(friendUsername, code).orElseThrow(() -> new EntityNotFoundException(""));
         Lobby lobby = invitor.getLobby();
-        if (lobby == null){
+        if (lobby == null) {
             lobby = new Lobby();
             invitor.setLobby(lobby);
             lobby.getUsers().add(invitor);
             userRepository.save(invitor);
         }
-        if (!lobby.getUsers().contains(acceptor)){
+        if (!lobby.getUsers().contains(acceptor)) {
             lobby.getUsers().add(acceptor);
             acceptor.setLobby(lobby);
             lobbyRepository.save(lobby);
@@ -81,14 +84,14 @@ public class LobbyServiceImpl implements LobbyService {
         User user = userRepository.findById(userDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         Lobby lobby = user.getLobby();
-        if (lobby == null){
+        if (lobby == null) {
             return false;
         }
         lobby.setFilled(false);
         lobby.getUsers().remove(user);
         user.setLobby(null);
         userRepository.save(user);
-        if (lobby.getUsers().isEmpty()){
+        if (lobby.getUsers().isEmpty()) {
             lobbyRepository.delete(lobby);
         } else {
             lobbyRepository.save(lobby);
