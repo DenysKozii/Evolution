@@ -26,8 +26,4 @@ public class Skin extends BaseEntity {
 
     private Integer rating;
 
-//    @Lob
-//    @Column(columnDefinition = "MEDIUMBLOB")
-//    private String image;
-
 }
