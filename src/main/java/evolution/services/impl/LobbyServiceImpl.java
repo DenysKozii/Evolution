@@ -27,7 +27,7 @@ public class LobbyServiceImpl implements LobbyService {
 
 
     @Override
-    public LobbyDto findLobby(UserDto userDto) {
+    public LobbyDto findLobby(UserDto userDto, String peerId) {
         User user = userRepository.findById(userDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         Lobby lobby;
@@ -43,7 +43,7 @@ public class LobbyServiceImpl implements LobbyService {
                 lobby.setRating(user.getRating());
                 user.setLobby(lobby);
             }
-            user.setPeerId(userDto.getPeerId());
+            user.setPeerId(peerId);
             lobbyRepository.save(lobby);
             userRepository.save(user);
         } else {

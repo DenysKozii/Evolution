@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 public class LobbyRestController {
     private final LobbyService lobbyService;
 
-    @GetMapping
-    public LobbyDto find(@AuthenticationPrincipal UserDto user) {
-        return lobbyService.findLobby(user);
+    @GetMapping("{peerId}")
+    public LobbyDto find(@AuthenticationPrincipal UserDto user, @PathVariable String peerId) {
+        return lobbyService.findLobby(user, peerId);
     }
 
     @PostMapping("cancel")

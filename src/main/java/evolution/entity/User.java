@@ -28,7 +28,7 @@ public class User {
 
     private Integer code;
 
-    private Integer peerId;
+    private String peerId;
 
     private Integer rating;
 
