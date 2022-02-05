@@ -50,4 +50,45 @@ public class LobbyServiceImpl implements LobbyService {
         }
         return LobbyMapper.INSTANCE.mapToDto(lobby);
     }
+
+    @Override
+    public boolean invite(UserDto userDto, String friendUsername, Integer code) {
+        User invitor = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
+        User acceptor = userRepository.findByUsernameAndCode(friendUsername, code).orElseThrow(() -> new EntityNotFoundException(""));
+        Lobby lobby = invitor.getLobby();
+        if (lobby == null){
+            lobby = new Lobby();
+            invitor.setLobby(lobby);
+            lobby.getUsers().add(invitor);
+            userRepository.save(invitor);
+        }
+        if (!lobby.getUsers().contains(acceptor)){
+            lobby.getUsers().add(acceptor);
+            acceptor.setLobby(lobby);
+            lobbyRepository.save(lobby);
+            userRepository.save(acceptor);
+            return true;
+        }
+        return false;
+    }
+
+    // todo check all conditions in the ticket
+    @Override
+    public boolean cancelLobby(UserDto userDto) {
+        User user = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
+        Lobby lobby = user.getLobby();
+        if (lobby == null){
+            return false;
+        }
+        lobby.setFilled(false);
+        lobby.getUsers().remove(user);
+        if (lobby.getUsers().isEmpty()){
+            lobbyRepository.delete(lobby);
+        } else {
+            lobbyRepository.save(lobby);
+        }
+        return true;
+    }
 }

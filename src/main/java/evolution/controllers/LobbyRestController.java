@@ -7,9 +7,7 @@ import evolution.entity.User;
 import evolution.services.LobbyService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -22,4 +20,13 @@ public class LobbyRestController {
         return lobbyService.findLobby(user);
     }
 
+    @PostMapping("cancel")
+    public boolean cancelLobby(@AuthenticationPrincipal UserDto user) {
+        return lobbyService.cancelLobby(user);
+    }
+
+    @PostMapping("invite/{friendUsername}/{code}")
+    public boolean invite(@AuthenticationPrincipal UserDto user, @PathVariable String friendUsername, @PathVariable Integer code) {
+        return lobbyService.invite(user, friendUsername, code);
+    }
 }
