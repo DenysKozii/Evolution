@@ -28,6 +28,8 @@ public class User {
 
     private Integer code;
 
+    private Integer peerId;
+
     private Integer rating;
 
     private Integer coins;

@@ -43,6 +43,7 @@ public class LobbyServiceImpl implements LobbyService {
                 lobby.setRating(user.getRating());
                 user.setLobby(lobby);
             }
+            user.setPeerId(userDto.getPeerId());
             lobbyRepository.save(lobby);
             userRepository.save(user);
         } else {

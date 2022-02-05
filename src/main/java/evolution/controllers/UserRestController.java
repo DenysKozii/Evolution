@@ -53,12 +53,14 @@ public class UserRestController {
             String line;
             String username = "";
             String email = "";
+            boolean filled = false;
             while ((line = bufReader.readLine()) != null) {
                 if (line.contains(GIVEN_NAME)) {
                     username = line.substring(17, line.length() - 2);
                 }
-                if (line.contains(EMAIL)) {
+                if (line.contains(EMAIL) && !filled) {
                     email = line.substring(12, line.length() - 2);
+                    filled = true;
                 }
             }
             userService.register(email, username);
