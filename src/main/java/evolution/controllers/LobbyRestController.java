@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class LobbyRestController {
     private final LobbyService lobbyService;
 
-    @GetMapping("{peerId}")
+    @GetMapping
     public LobbyDto find(@AuthenticationPrincipal UserDto user, @RequestParam String peerId) {
         return lobbyService.findLobby(user, peerId);
     }
