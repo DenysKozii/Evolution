@@ -28,18 +28,6 @@ public class UserRestController {
     private static final String GIVEN_NAME = "given_name";
     private static final String EMAIL = "email";
 
-//    private final SimpMessagingTemplate simpMessagingTemplate;
-//
-//    @MessageMapping("/secured/room")
-//    public void sendSpecific(
-//            @Payload Message msg,
-//            @AuthenticationPrincipal UserDto user,
-//            @Header("simpSessionId") String sessionId) {
-//        String message = "hello world!";
-//        simpMessagingTemplate.convertAndSendToUser(user.getEmail(), "/secured/user/queue/specific-user", message);
-//    }
-
-
     @GetMapping("profile")
     public UserDto profile(@AuthenticationPrincipal UserDto user) {
         return user;
