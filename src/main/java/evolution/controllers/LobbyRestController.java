@@ -14,8 +14,13 @@ public class LobbyRestController {
     private final LobbyService lobbyService;
 
     @GetMapping
-    public LobbyDto find(@AuthenticationPrincipal UserDto user) {
-        return lobbyService.findLobby(user);
+    public LobbyDto get(@AuthenticationPrincipal UserDto user) {
+        return lobbyService.get(user);
+    }
+
+    @GetMapping("start")
+    public void start(@AuthenticationPrincipal UserDto user) {
+        lobbyService.start(user);
     }
 
     @PostMapping("cancel")

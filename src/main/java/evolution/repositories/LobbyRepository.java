@@ -12,7 +12,7 @@ public interface LobbyRepository extends JpaRepository<Lobby, Long>, PagingAndSo
 
     Optional<Lobby> findByUsers(User user);
 
-    @Query(value = "select * from lobbies where rating > ?1 - 100 and rating < ?1 + 100", nativeQuery = true)
+    @Query(value = "select * from lobbies where rating > ?1 - 100 and rating < ?1 + 100 and started = false", nativeQuery = true)
     Optional<Lobby> findFirstByCloseRating(Integer rating);
 
 }

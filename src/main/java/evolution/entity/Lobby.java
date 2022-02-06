@@ -24,7 +24,7 @@ public class Lobby extends BaseEntity {
 
     private Integer rating = 0;
 
-    private Boolean filled = false;
+    private Boolean started = false;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

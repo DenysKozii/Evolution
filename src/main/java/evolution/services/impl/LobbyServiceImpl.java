@@ -27,7 +27,7 @@ public class LobbyServiceImpl implements LobbyService {
 
 
     @Override
-    public LobbyDto findLobby(UserDto userDto) {
+    public LobbyDto get(UserDto userDto) {
         User user = userRepository.findById(userDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         Lobby lobby;
@@ -38,7 +38,6 @@ public class LobbyServiceImpl implements LobbyService {
             if (lobbyByRating.isPresent()) {
                 lobby = lobbyByRating.get();
                 user.setLobby(lobby);
-                lobby.setFilled(true);
             } else {
                 lobby = new Lobby();
                 lobby.setRating(user.getRating());
@@ -84,7 +83,7 @@ public class LobbyServiceImpl implements LobbyService {
         if (lobby == null) {
             return false;
         }
-        lobby.setFilled(false);
+        lobby.setStarted(false);
         lobby.getUsers().remove(user);
         user.setLobby(null);
         userRepository.save(user);
@@ -94,5 +93,15 @@ public class LobbyServiceImpl implements LobbyService {
             lobbyRepository.save(lobby);
         }
         return true;
+    }
+
+    @Override
+    public void start(UserDto user) {
+        User invitor = userRepository.findById(user.getId())
+                                     .orElseThrow(() -> new EntityNotFoundException("User with id " + user.getId() + " doesn't exists!"));
+        Lobby lobby = lobbyRepository.findByUsers(invitor)
+                                                     .orElseThrow(() -> new EntityNotFoundException("User with id " + user.getId() + " doesn't exists!"));
+        lobby.setStarted(true);
+        lobbyRepository.save(lobby);
     }
 }
