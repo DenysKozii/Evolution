@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/box")
+@RequestMapping("api/boxes")
 public class BoxRestController {
     private final BoxService boxService;
 

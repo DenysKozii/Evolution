@@ -34,7 +34,7 @@ public class Lobby extends BaseEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "game_id", referencedColumnName = "id")
-    private Game game;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User host;
 
 }

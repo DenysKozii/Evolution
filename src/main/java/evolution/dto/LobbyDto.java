@@ -21,7 +21,7 @@ public class LobbyDto extends BaseDto {
 
     private Boolean filled;
 
-    private GameDto game;
+    private UserLobbyDto host;
 
     private List<UserLobbyDto> users = new ArrayList<>();
 

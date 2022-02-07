@@ -46,6 +46,7 @@ public class LobbyServiceImpl implements LobbyService {
                 lobby = new Lobby();
                 lobby.setRating(user.getRating());
                 user.setLobby(lobby);
+                lobby.setHost(user);
             }
             lobby.getUsers().add(user);
             lobbyRepository.save(lobby);
