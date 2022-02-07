@@ -48,8 +48,8 @@ public class User {
 
     private RatingStep ratingStep;
 
-//    @Column(name = "box_update", nullable = false)
-//    private Date boxUpdate = new Date();
+    @Column(name = "box_update", nullable = false)
+    private Date boxUpdate = new Date();
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

@@ -66,4 +66,12 @@ public class BoxServiceImpl implements BoxService {
                             .map(BoxMapper.INSTANCE::mapToDto)
                             .collect(Collectors.toList());
     }
+
+    @Override
+    public Box getRandom() {
+        return boxRepository.findById((long) (Math.random() * (boxRepository.count() + 1)))
+                            .orElseGet(() -> boxRepository.findById(0L)
+                                                          .orElseThrow(() -> new EntityNotFoundException("")));
+
+    }
 }

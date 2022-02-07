@@ -11,9 +11,9 @@ import evolution.entity.User;
 import evolution.enums.RatingStep;
 import evolution.exception.EntityNotFoundException;
 import evolution.mapper.LobbyMapper;
-import evolution.repositories.BoxRepository;
 import evolution.repositories.LobbyRepository;
 import evolution.repositories.UserRepository;
+import evolution.services.BoxService;
 import evolution.services.LobbyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class LobbyServiceImpl implements LobbyService {
 
     private final        LobbyRepository lobbyRepository;
     private final        UserRepository  userRepository;
-    private final        BoxRepository   boxRepository;
+    private final        BoxService      boxService;
     private static final Integer         RATING_FOR_STEPS            = 100;
     private static final Integer         RATING_DECREASE_COEFFICIENT = 11;
     private static final Integer         RATING_INCREASE_COEFFICIENT = 11;
@@ -132,9 +132,7 @@ public class LobbyServiceImpl implements LobbyService {
         winner.setRatingStep(RatingStep.getByOrder(winner.getRating() / RATING_FOR_STEPS));
         if (winner.getRating() / 100 > winner.getMaximumRating() / 100) {
             winner.setMaximumRating(winner.getRating());
-            Box box = boxRepository.findById((long) (Math.random() * (boxRepository.count() + 1)))
-                                   .orElseGet(() -> boxRepository.findById(0L)
-                                                                 .orElseThrow(() -> new EntityNotFoundException("")));
+            Box box = boxService.getRandom();
             winner.getBoxes().add(box);
         }
         winner.setPlasma(winner.getPlasma() + lobby.getUsers().size() * PLASMA_INCREASE_COEFFICIENT);

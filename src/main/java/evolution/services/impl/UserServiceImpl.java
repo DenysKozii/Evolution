@@ -1,5 +1,8 @@
 package evolution.services.impl;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
 import evolution.dto.UserDto;
 import evolution.entity.Role;
 import evolution.entity.User;
@@ -7,12 +10,14 @@ import evolution.exception.EntityNotFoundException;
 import evolution.mapper.UserMapper;
 import evolution.repositories.UserRepository;
 import evolution.services.AbilityService;
+import evolution.services.BoxService;
 import evolution.services.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final AbilityService abilityService;
+    private final BoxService     boxService;
 
     @Override
     public void register(String email, String username) {
@@ -43,6 +49,16 @@ public class UserServiceImpl implements UserService {
             user.setAvailableAbilities(abilityService.getDefaultAvailableAbilities());
             user.setBoughtAbilities(abilityService.getNewUserAbilities());
             userRepository.save(user);
+        } else {
+            User user = userOptional.get();
+            Date currentDate = new Date();
+            LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            localDateTime = localDateTime.minusDays(1);
+            if (user.getBoxUpdate().before(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))) {
+                user.getBoxes().add(boxService.getRandom());
+                user.setBoxUpdate(currentDate);
+                userRepository.save(user);
+            }
         }
     }
 
