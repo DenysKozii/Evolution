@@ -20,7 +20,6 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "boxes")
