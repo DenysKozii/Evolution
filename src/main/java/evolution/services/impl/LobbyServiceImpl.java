@@ -132,8 +132,7 @@ public class LobbyServiceImpl implements LobbyService {
         winner.setRatingStep(RatingStep.getByOrder(winner.getRating() / RATING_FOR_STEPS));
         if (winner.getRating() / 100 > winner.getMaximumRating() / 100) {
             winner.setMaximumRating(winner.getRating());
-            Box box = boxService.getRandom();
-            winner.getBoxes().add(box);
+            winner.getBoxes().add(boxService.getRandom());
         }
         winner.setPlasma(winner.getPlasma() + lobby.getUsers().size() * PLASMA_INCREASE_COEFFICIENT);
         winner.setDna(winner.getDna() + (int) (Math.random() * DNA_INCREASE_COEFFICIENT));

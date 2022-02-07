@@ -74,4 +74,14 @@ public class BoxServiceImpl implements BoxService {
                                                           .orElseThrow(() -> new EntityNotFoundException("")));
 
     }
+
+    @Override
+    public void activate(UserDto userDto, Long boxId) {
+        User user = userRepository.findById(userDto.getId())
+                                  .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
+        Box box = boxRepository.findById(boxId)
+                               .orElseThrow(() -> new EntityNotFoundException(""));
+        user.getActivatedBoxes().add(box);
+        userRepository.save(user);
+    }
 }

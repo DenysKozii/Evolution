@@ -119,4 +119,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "box_id"))
     private List<Box> boxes = new ArrayList<>();
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany
+    @JoinTable(name = "user_boxes_activated",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "box_id"))
+    private List<Box> activatedBoxes = new ArrayList<>();
+
 }

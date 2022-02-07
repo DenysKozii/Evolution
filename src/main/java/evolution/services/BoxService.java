@@ -16,4 +16,5 @@ public interface BoxService {
 
     Box getRandom();
 
+    void activate(UserDto user, Long boxId);
 }

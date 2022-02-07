@@ -36,4 +36,7 @@ public class Box extends BaseEntity {
     @ManyToMany(mappedBy = "boxes")
     private List<User> users = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "activatedBoxes")
+    private List<User> activatedUsers = new ArrayList<>();
+
 }
