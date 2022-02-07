@@ -18,7 +18,7 @@
 //import java.util.List;
 //import java.util.Optional;
 //
-//@Component
+//@Componentя
 //@RequiredArgsConstructor
 //@EnableScheduling
 //public class Scheduler {

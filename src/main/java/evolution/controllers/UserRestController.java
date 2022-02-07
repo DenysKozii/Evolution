@@ -28,7 +28,7 @@ public class UserRestController {
     private static final String GIVEN_NAME = "given_name";
     private static final String EMAIL = "email";
 
-    @GetMapping("profile")
+    @GetMapping
     public UserDto profile(@AuthenticationPrincipal UserDto user) {
         return userService.profile(user);
     }
