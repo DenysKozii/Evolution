@@ -48,6 +48,9 @@ public class User {
 
     private RatingStep ratingStep;
 
+//    @Column(name = "box_update", nullable = false)
+//    private Date boxUpdate = new Date();
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
@@ -59,11 +62,6 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "skin_id")
     private Skin currentSkin;
-
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Unit> units = new ArrayList<>();
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
