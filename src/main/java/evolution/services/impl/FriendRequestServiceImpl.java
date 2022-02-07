@@ -1,5 +1,8 @@
 package evolution.services.impl;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import evolution.dto.FriendRequestDto;
 import evolution.dto.UserDto;
 import evolution.entity.FriendRequest;
@@ -11,8 +14,6 @@ import evolution.repositories.UserRepository;
 import evolution.services.FriendRequestService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;

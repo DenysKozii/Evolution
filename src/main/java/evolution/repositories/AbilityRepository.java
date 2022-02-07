@@ -2,6 +2,8 @@ package evolution.repositories;
 
 import evolution.entity.Ability;
 import evolution.entity.User;
+import evolution.enums.AbilityType;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -18,5 +20,7 @@ public interface AbilityRepository extends JpaRepository<Ability, Long>, PagingA
     List<Ability> findAllByBoughtUsers(User user);
 
     List<Ability> findAllByGameUsers(User user);
+
+    boolean existsByType(AbilityType type);
 
 }

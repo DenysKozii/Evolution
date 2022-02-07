@@ -19,6 +19,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,13 +41,21 @@ public class AbilityServiceImpl implements AbilityService {
     @EventListener(ApplicationReadyEvent.class)
     @Override
     public void initialise() {
-        if (abilityRepository.count() == 0) {
-            Ability division = createAbility("Ускорить деление", "Уменьшает интервал деления с 6 до 4 секунд", 0, 0, AbilityType.DIVISION, ImmutableList.of());
-            Ability fang = createAbility("Растут клыки", "Выше урон", 0, 0, AbilityType.FANG, ImmutableList.of());
-            createAbility("Хитиновый панцирь", "Больше здоровья", 0, 0, AbilityType.SHIELD, ImmutableList.of());
-            createAbility("Дальше распознает жертву", "Больше радиус распознавания", 0, 0, AbilityType.HUNTING, ImmutableList.of(fang));
-            createAbility("Двойное деление", "При делении появляется не 1, а 2 круга", 0, 0, AbilityType.DOUBLE_DIVISION, ImmutableList.of(division));
+        List<Ability> abilities = setupAbilitiesList();
+        if (abilityRepository.count() != abilities.size()) {
+            abilities.stream()
+                    .filter(ability -> !abilityRepository.existsByType(ability.getType()))
+                    .forEach(abilityRepository::save);
         }
+    }
+
+    private List<Ability> setupAbilitiesList(){
+        Ability division = createAbility("Ускорить деление", "Уменьшает интервал деления с 6 до 4 секунд", 0, 0, AbilityType.DIVISION, ImmutableList.of());
+        Ability fang = createAbility("Растут клыки", "Выше урон", 0, 0, AbilityType.FANG, ImmutableList.of());
+        Ability shield = createAbility("Хитиновый панцирь", "Больше здоровья", 0, 0, AbilityType.SHIELD, ImmutableList.of());
+        Ability hunting = createAbility("Дальше распознает жертву", "Больше радиус распознавания", 0, 0, AbilityType.HUNTING, ImmutableList.of(fang));
+        Ability doubleDivision = createAbility("Двойное деление", "При делении появляется не 1, а 2 круга", 0, 0, AbilityType.DOUBLE_DIVISION, ImmutableList.of(division));
+        return Arrays.asList(division, fang, shield, hunting, doubleDivision);
     }
 
     private Ability createAbility(String title, String description, Integer coins, Integer crystals, AbilityType type, List<Ability> abilities) {
