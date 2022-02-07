@@ -6,11 +6,13 @@ import evolution.dto.UserDto;
 
 public interface LobbyService {
 
-    LobbyDto get(UserDto user);
+    LobbyDto get(UserDto userDto);
 
-    boolean invite(UserDto user, String friendUsername, Integer code);
+    boolean invite(UserDto userDto, String friendUsername, Integer code);
 
-    boolean cancel(UserDto user);
+    boolean cancel(UserDto userDto);
 
-    void start(UserDto user);
+    void start(UserDto userDto);
+
+    void complete(UserDto userDto);
 }

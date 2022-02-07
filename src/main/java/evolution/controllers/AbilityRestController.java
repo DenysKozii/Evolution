@@ -19,6 +19,7 @@ public class AbilityRestController {
     public List<AbilityDto> allAvailableAbilities(@AuthenticationPrincipal UserDto user) {
         return abilityService.getAllAvailable(user);
     }
+
     @GetMapping("bought")
     public List<AbilityDto> allBoughtAbilities(@AuthenticationPrincipal UserDto user) {
         return abilityService.getAllBought(user);

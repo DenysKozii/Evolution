@@ -23,6 +23,11 @@ public class LobbyRestController {
         lobbyService.start(user);
     }
 
+    @GetMapping("complete")
+    public void complete(@AuthenticationPrincipal UserDto user) {
+        lobbyService.complete(user);
+    }
+
     @PostMapping("cancel")
     public boolean cancel(@AuthenticationPrincipal UserDto user) {
         return lobbyService.cancel(user);

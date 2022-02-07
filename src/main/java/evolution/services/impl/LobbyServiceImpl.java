@@ -1,5 +1,8 @@
 package evolution.services.impl;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import evolution.dto.LobbyDto;
 import evolution.dto.UserDto;
 import evolution.entity.Lobby;
@@ -11,8 +14,6 @@ import evolution.repositories.UserRepository;
 import evolution.services.LobbyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -22,14 +23,17 @@ import java.util.Optional;
 @AllArgsConstructor
 public class LobbyServiceImpl implements LobbyService {
 
-    private final LobbyRepository lobbyRepository;
-    private final UserRepository userRepository;
-
+    private final        LobbyRepository lobbyRepository;
+    private final        UserRepository  userRepository;
+    private static final Integer         RATE_DECREASE_COEFFICIENT   = 11;
+    private static final Integer         RATE_INCREASE_COEFFICIENT   = 11;
+    private static final Integer         PLASMA_INCREASE_COEFFICIENT = 5;
+    private static final Double          DNA_INCREASE_COEFFICIENT    = 1.5;
 
     @Override
     public LobbyDto get(UserDto userDto) {
         User user = userRepository.findById(userDto.getId())
-                .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
+                                  .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         Lobby lobby;
         Optional<Lobby> lobbyByUser = lobbyRepository.findByUsers(user);
 
@@ -96,12 +100,28 @@ public class LobbyServiceImpl implements LobbyService {
     }
 
     @Override
-    public void start(UserDto user) {
-        User invitor = userRepository.findById(user.getId())
-                                     .orElseThrow(() -> new EntityNotFoundException("User with id " + user.getId() + " doesn't exists!"));
+    public void start(UserDto userDto) {
+        User invitor = userRepository.findById(userDto.getId())
+                                     .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         Lobby lobby = lobbyRepository.findByUsers(invitor)
-                                                     .orElseThrow(() -> new EntityNotFoundException("User with id " + user.getId() + " doesn't exists!"));
+                                     .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         lobby.setStarted(true);
         lobbyRepository.save(lobby);
+    }
+
+    @Override
+    public void complete(UserDto userDto) {
+        User winner = userRepository.findById(userDto.getId())
+                                    .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
+        Lobby lobby = lobbyRepository.findByUsers(winner)
+                                     .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
+        lobby.getUsers().stream()
+             .filter(u -> !u.getId().equals(winner.getId()))
+             .forEach(u -> u.setRating(Math.max(0, u.getRating() - RATE_DECREASE_COEFFICIENT)));
+        winner.setRating(winner.getRating() + lobby.getUsers().size() * RATE_INCREASE_COEFFICIENT);
+        winner.setPlasma(winner.getPlasma() + lobby.getUsers().size() * PLASMA_INCREASE_COEFFICIENT);
+        winner.setDna(winner.getDna() + (int) (Math.random() * DNA_INCREASE_COEFFICIENT));
+        userRepository.saveAll(lobby.getUsers());
+        lobbyRepository.delete(lobby);
     }
 }
