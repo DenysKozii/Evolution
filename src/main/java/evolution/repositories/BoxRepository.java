@@ -5,11 +5,14 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import evolution.entity.Box;
 import evolution.entity.User;
+import evolution.enums.BoxType;
 
 import java.util.List;
 
 public interface BoxRepository extends JpaRepository<Box, Long>, PagingAndSortingRepository<Box, Long> {
 
     List<Box> findAllByUsers(User user);
+
+    boolean existsByType(BoxType type);
 
 }

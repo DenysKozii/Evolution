@@ -5,10 +5,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import evolution.dto.LobbyDto;
 import evolution.dto.UserDto;
+import evolution.entity.Box;
 import evolution.entity.Lobby;
 import evolution.entity.User;
+import evolution.enums.RatingStep;
 import evolution.exception.EntityNotFoundException;
 import evolution.mapper.LobbyMapper;
+import evolution.repositories.BoxRepository;
 import evolution.repositories.LobbyRepository;
 import evolution.repositories.UserRepository;
 import evolution.services.LobbyService;
@@ -25,8 +28,10 @@ public class LobbyServiceImpl implements LobbyService {
 
     private final        LobbyRepository lobbyRepository;
     private final        UserRepository  userRepository;
-    private static final Integer         RATE_DECREASE_COEFFICIENT   = 11;
-    private static final Integer         RATE_INCREASE_COEFFICIENT   = 11;
+    private final        BoxRepository   boxRepository;
+    private static final Integer         RATING_FOR_STEPS            = 100;
+    private static final Integer         RATING_DECREASE_COEFFICIENT = 11;
+    private static final Integer         RATING_INCREASE_COEFFICIENT = 11;
     private static final Integer         PLASMA_INCREASE_COEFFICIENT = 5;
     private static final Double          DNA_INCREASE_COEFFICIENT    = 1.5;
 
@@ -118,8 +123,20 @@ public class LobbyServiceImpl implements LobbyService {
                                      .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         lobby.getUsers().stream()
              .filter(u -> !u.getId().equals(winner.getId()))
-             .forEach(u -> u.setRating(Math.max(0, u.getRating() - RATE_DECREASE_COEFFICIENT)));
-        winner.setRating(winner.getRating() + lobby.getUsers().size() * RATE_INCREASE_COEFFICIENT);
+             .forEach(u ->
+                      {
+                          u.setRating(Math.max(0, u.getRating() - RATING_DECREASE_COEFFICIENT));
+                          u.setRatingStep(RatingStep.getByOrder(u.getRating() / RATING_FOR_STEPS));
+                      });
+        winner.setRating(winner.getRating() + lobby.getUsers().size() * RATING_INCREASE_COEFFICIENT);
+        winner.setRatingStep(RatingStep.getByOrder(winner.getRating() / RATING_FOR_STEPS));
+        if (winner.getRating() / 100 > winner.getMaximumRating() / 100) {
+            winner.setMaximumRating(winner.getRating());
+            Box box = boxRepository.findById((long) (Math.random() * (boxRepository.count() + 1)))
+                                   .orElseGet(() -> boxRepository.findById(0L)
+                                                                 .orElseThrow(() -> new EntityNotFoundException("")));
+            winner.getBoxes().add(box);
+        }
         winner.setPlasma(winner.getPlasma() + lobby.getUsers().size() * PLASMA_INCREASE_COEFFICIENT);
         winner.setDna(winner.getDna() + (int) (Math.random() * DNA_INCREASE_COEFFICIENT));
         userRepository.saveAll(lobby.getUsers());

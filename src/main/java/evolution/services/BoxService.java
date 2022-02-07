@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface BoxService {
 
+    void initialise();
+
     List<BoxDto> findAll(UserDto user);
 
 }

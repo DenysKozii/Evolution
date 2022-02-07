@@ -3,17 +3,17 @@ package evolution.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import evolution.entity.Unit;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import evolution.enums.RatingStep;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -36,6 +36,8 @@ public class UserDto extends BaseDto implements UserDetails {
     private Integer plasma;
 
     private Integer dna;
+
+    private RatingStep ratingStep;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

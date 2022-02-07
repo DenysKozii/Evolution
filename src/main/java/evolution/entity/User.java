@@ -1,5 +1,6 @@
 package evolution.entity;
 
+import evolution.enums.RatingStep;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +33,9 @@ public class User {
 
     private Integer rating;
 
+    @Column(name = "maximum_rating")
+    private Integer maximumRating;
+
     private Integer plasma;
 
     private Integer dna;
@@ -41,6 +45,8 @@ public class User {
     @EqualsAndHashCode.Exclude
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private RatingStep ratingStep;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
