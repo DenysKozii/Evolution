@@ -14,6 +14,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -38,6 +39,8 @@ public class UserDto extends BaseDto implements UserDetails {
     private Integer dna;
 
     private RatingStep ratingStep;
+
+    private Date boxUpdate = new Date();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

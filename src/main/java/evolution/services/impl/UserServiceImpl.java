@@ -49,27 +49,34 @@ public class UserServiceImpl implements UserService {
             user.setAvailableAbilities(abilityService.getDefaultAvailableAbilities());
             user.setBoughtAbilities(abilityService.getNewUserAbilities());
             userRepository.save(user);
-        } else {
-            User user = userOptional.get();
-            Date currentDate = new Date();
-            LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-            localDateTime = localDateTime.minusDays(1);
-            if (user.getBoxUpdate().before(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))) {
-                user.getBoxes().add(boxService.getRandom());
-                user.setBoxUpdate(currentDate);
-                userRepository.save(user);
-            }
         }
     }
 
-    private String generatePeerId(){
+    @Override
+    public UserDto profile(UserDto userDto) {
+//        User user = userRepository.findByEmail(userDto.getEmail())
+//                                  .orElseThrow(() -> new EntityNotFoundException(""));
+//        Date currentDate = new Date();
+//        LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+//        localDateTime = localDateTime.minusDays(1);
+//        if (user.getBoxUpdate().before(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))) {
+//            user.getBoxes().add(boxService.getRandom());
+//            user.setBoxUpdate(currentDate);
+//            userRepository.save(user);
+//        }
+        log.info(userDto.getEmail());
+        log.info(userDto.getBoxUpdate().toString());
+        return userDto;
+    }
+
+    private String generatePeerId() {
         return UUID.randomUUID().toString();
     }
 
     @Override
     public List<UserDto> getFriends(UserDto user) {
         User current = userRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new EntityNotFoundException("User with email " + user.getEmail() + " doesn't exists!"));
+                                     .orElseThrow(() -> new EntityNotFoundException("User with email " + user.getEmail() + " doesn't exists!"));
         return current.getFriends().stream()
                 .map(UserMapper.INSTANCE::mapToDto)
                 .collect(Collectors.toList());

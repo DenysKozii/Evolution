@@ -30,7 +30,7 @@ public class UserRestController {
 
     @GetMapping("profile")
     public UserDto profile(@AuthenticationPrincipal UserDto user) {
-        return user;
+        return userService.profile(user);
     }
 
     @GetMapping("friends")
