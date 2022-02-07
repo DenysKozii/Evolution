@@ -104,10 +104,10 @@ public class GameServiceImpl implements GameService {
                 u.setUnits(null);
                 u.setLobby(null);
             }
-            lobby.getUsers().stream().filter(u -> u.getId().equals(winner.getId())).forEach(u -> u.setRating(Math.max(0, u.getRating() - 10)));
+            lobby.getUsers().stream().filter(u -> !u.getId().equals(winner.getId())).forEach(u -> u.setRating(Math.max(0, u.getRating() - 10)));
             lobby.setUsers(null);
-            winner.setRating(winner.getRating() + 10);
-            winner.setCoins(winner.getCoins() + 10);
+            winner.setRating(winner.getRating() + lobby.getUsers().size() * 11);
+            winner.setPlasma(winner.getPlasma() + 10);
             lobbyDto = LobbyMapper.INSTANCE.mapToDto(lobby);
             lobbyRepository.delete(lobby);
             userRepository.saveAll(users);

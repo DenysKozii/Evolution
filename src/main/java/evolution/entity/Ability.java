@@ -23,9 +23,9 @@ public class Ability extends BaseEntity {
 
     private String description;
 
-    private Integer coins;
+    private Integer plasma;
 
-    private Integer crystals;
+    private Integer dna;
 
     private AbilityType type;
 

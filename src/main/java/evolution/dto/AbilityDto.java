@@ -21,9 +21,9 @@ public class AbilityDto extends BaseDto {
 
     private String description;
 
-    private Integer coins;
+    private Integer plasma;
 
-    private Integer crystals;
+    private Integer dna;
 
     private AbilityType type;
 

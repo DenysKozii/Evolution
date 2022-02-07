@@ -38,8 +38,8 @@ public class UserServiceImpl implements UserService {
             user.setCode(usernameCode);
             user.setPeerId(generatePeerId());
             user.setRating(0);
-            user.setCoins(100);
-            user.setCrystals(10);
+            user.setPlasma(100);
+            user.setDna(10);
             user.setAvailableAbilities(abilityService.getDefaultAvailableAbilities());
             user.setBoughtAbilities(abilityService.getNewUserAbilities());
             userRepository.save(user);

@@ -20,9 +20,9 @@ public class Skin extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer coins;
+    private Integer plasma;
 
-    private Integer crystals;
+    private Integer dna;
 
     private Integer rating;
 

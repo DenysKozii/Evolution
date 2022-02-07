@@ -33,9 +33,9 @@ public class UserDto extends BaseDto implements UserDetails {
 
     private Integer rating;
 
-    private Integer coins;
+    private Integer plasma;
 
-    private Integer crystals;
+    private Integer dna;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

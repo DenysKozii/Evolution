@@ -32,9 +32,9 @@ public class User {
 
     private Integer rating;
 
-    private Integer coins;
+    private Integer plasma;
 
-    private Integer crystals;
+    private Integer dna;
 
     @NonNull
     @ToString.Exclude
@@ -106,5 +106,13 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "skin_id"))
     private List<Skin> skins = new ArrayList<>();
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany
+    @JoinTable(name = "user_boxes",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "box_id"))
+    private List<Box> boxes = new ArrayList<>();
 
 }

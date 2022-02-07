@@ -1,21 +1,26 @@
-package evolution.dto.user;
+package evolution.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import evolution.enums.AbilityType;
+import evolution.enums.BoxType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class LoginRequest {
-    @NotNull(message = "Username is required.")
-    private String username;
+public class BoxDto extends BaseDto {
 
-    @NotNull(message = "Password is required.")
-    private String password;
+    private String description;
+
+    private BoxType type;
+
 }

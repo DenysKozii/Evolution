@@ -52,8 +52,8 @@ public class AbilityServiceImpl implements AbilityService {
         Ability newAbility = new Ability();
         newAbility.setTitle(title);
         newAbility.setDescription(description);
-        newAbility.setCoins(coins);
-        newAbility.setCrystals(crystals);
+        newAbility.setPlasma(coins);
+        newAbility.setDna(crystals);
         newAbility.setType(type);
         newAbility.getConditionAbilities().addAll(abilities);
         abilityRepository.save(newAbility);
@@ -118,8 +118,8 @@ public class AbilityServiceImpl implements AbilityService {
         Ability ability = abilityRepository.findById(abilityId).orElseThrow(() -> new EntityNotFoundException(""));
         user.getBoughtAbilities().add(ability);
         user.getAvailableAbilities().remove(ability);
-        user.setCoins(user.getCoins() - ability.getCoins());
-        user.setCrystals(user.getCrystals() - ability.getCrystals());
+        user.setPlasma(user.getPlasma() - ability.getPlasma());
+        user.setDna(user.getDna() - ability.getDna());
         userRepository.save(user);
     }
 
