@@ -54,18 +54,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto profile(UserDto userDto) {
-//        User user = userRepository.findByEmail(userDto.getEmail())
-//                                  .orElseThrow(() -> new EntityNotFoundException(""));
-//        Date currentDate = new Date();
-//        LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-//        localDateTime = localDateTime.minusDays(1);
-//        if (user.getBoxUpdate().before(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))) {
-//            user.getBoxes().add(boxService.getRandom());
-//            user.setBoxUpdate(currentDate);
-//            userRepository.save(user);
-//        }
-        log.info(userDto.getEmail());
-        log.info(userDto.getBoxUpdate().toString());
+        Date currentDate = new Date();
+        LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        localDateTime = localDateTime.minusDays(1);
+        if (userDto.getBoxUpdate().before(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))) {
+            User user = userRepository.findByEmail(userDto.getEmail())
+                                      .orElseThrow(() -> new EntityNotFoundException(""));
+            user.getBoxes().add(boxService.getRandom());
+            user.setBoxUpdate(currentDate);
+            userRepository.save(user);
+        }
         return userDto;
     }
 
