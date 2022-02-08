@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/lobby")
+@RequestMapping("api/v1/lobbies")
 public class LobbyRestController {
     private final LobbyService lobbyService;
 

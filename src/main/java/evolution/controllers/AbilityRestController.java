@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/abilities")
+@RequestMapping("api/v1/abilities")
 public class AbilityRestController {
     private final AbilityService abilityService;
 

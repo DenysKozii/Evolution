@@ -12,17 +12,17 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/friend")
+@RequestMapping("api/v1/friends")
 public class FriendRequestRestController {
 
     private FriendRequestService friendRequestService;
 
-    @GetMapping("list/invite")
+    @GetMapping("invite")
     public List<FriendRequestDto> inviteList(@AuthenticationPrincipal UserDto user) {
         return friendRequestService.inviteList(user);
     }
 
-    @GetMapping("list/accept")
+    @GetMapping("accept")
     public List<FriendRequestDto> acceptList(@AuthenticationPrincipal UserDto user) {
         return friendRequestService.acceptList(user);
     }
