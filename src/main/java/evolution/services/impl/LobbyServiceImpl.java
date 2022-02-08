@@ -101,7 +101,7 @@ public class LobbyServiceImpl implements LobbyService {
         userRepository.save(user);
         if (lobby.getUsers().isEmpty()) {
             lobbyRepository.save(lobby);
-            lobbyRepository.delete(lobby);
+//            lobbyRepository.delete(lobby);
         } else {
             lobbyRepository.save(lobby);
         }
