@@ -84,4 +84,10 @@ public class BoxServiceImpl implements BoxService {
         user.getActivatedBoxes().add(box);
         userRepository.save(user);
     }
+
+    @Override
+    public Box getByType(BoxType type) {
+        return boxRepository.findByType(type)
+                            .orElseThrow(() -> new EntityNotFoundException(""));
+    }
 }

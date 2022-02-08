@@ -8,6 +8,7 @@ import evolution.entity.User;
 import evolution.enums.BoxType;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BoxRepository extends JpaRepository<Box, Long>, PagingAndSortingRepository<Box, Long> {
 
@@ -15,4 +16,5 @@ public interface BoxRepository extends JpaRepository<Box, Long>, PagingAndSortin
 
     boolean existsByType(BoxType type);
 
+    Optional<Box> findByType(BoxType type);
 }

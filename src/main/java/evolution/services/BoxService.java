@@ -5,6 +5,7 @@ import evolution.dto.BoxDto;
 import evolution.dto.LobbyDto;
 import evolution.dto.UserDto;
 import evolution.entity.Box;
+import evolution.enums.BoxType;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface BoxService {
     Box getRandom();
 
     void activate(UserDto user, Long boxId);
+
+    Box getByType(BoxType ratingDefence);
 }

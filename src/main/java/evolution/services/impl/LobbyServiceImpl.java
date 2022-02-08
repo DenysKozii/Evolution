@@ -8,6 +8,7 @@ import evolution.dto.UserDto;
 import evolution.entity.Box;
 import evolution.entity.Lobby;
 import evolution.entity.User;
+import evolution.enums.BoxType;
 import evolution.enums.RatingStep;
 import evolution.exception.EntityNotFoundException;
 import evolution.mapper.LobbyMapper;
@@ -18,7 +19,9 @@ import evolution.services.LobbyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -121,13 +124,17 @@ public class LobbyServiceImpl implements LobbyService {
                                     .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         Lobby lobby = lobbyRepository.findByUsers(winner)
                                      .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
-        lobby.getUsers().stream()
-             .filter(u -> !u.getId().equals(winner.getId()))
-             .forEach(u ->
-                      {
-                          u.setRating(Math.max(0, u.getRating() - RATING_DECREASE_COEFFICIENT));
-                          u.setRatingStep(RatingStep.getByOrder(u.getRating() / RATING_FOR_STEPS));
-                      });
+        for (User user: lobby.getUsers()) {
+            if (!user.equals(winner)){
+                Box box = boxService.getByType(BoxType.RATING_DEFENCE);
+                if (user.getActivatedBoxes().contains(box)){
+                    user.getActivatedBoxes().remove(box);
+                } else {
+                    user.setRating(Math.max(0, user.getRating() - RATING_DECREASE_COEFFICIENT));
+                    user.setRatingStep(RatingStep.getByOrder(user.getRating() / RATING_FOR_STEPS));
+                }
+            }
+        }
         winner.setRating(winner.getRating() + lobby.getUsers().size() * RATING_INCREASE_COEFFICIENT);
         winner.setRatingStep(RatingStep.getByOrder(winner.getRating() / RATING_FOR_STEPS));
         if (winner.getRating() / 100 > winner.getMaximumRating() / 100) {
