@@ -40,8 +40,8 @@ public class LobbyServiceImpl implements LobbyService {
 
     @Override
     public LobbyDto get(UserDto userDto) {
-        User user = userRepository.findById(userDto.getId())
-                                  .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
+        User user = userRepository.findByEmail(userDto.getEmail())
+                                  .orElseThrow(() -> new EntityNotFoundException("User with idemail " + userDto.getId() + " doesn't exists!"));
         Lobby lobby;
         Optional<Lobby> lobbyByUser = lobbyRepository.findByUsers(user);
 
