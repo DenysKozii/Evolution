@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/users", "/api/v1/users/login").permitAll()
+                .antMatchers("/api/v1/users/googleLogin", "/api/v1/users/login").permitAll()
                 .antMatchers(SWAGGER_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
