@@ -96,7 +96,6 @@ public class LobbyServiceImpl implements LobbyService {
         if (lobby == null) {
             return false;
         }
-        lobby.setStarted(false);
         lobby.getUsers().remove(user);
         user.setLobby(null);
         userRepository.save(user);
