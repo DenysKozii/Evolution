@@ -103,6 +103,7 @@ public class LobbyServiceImpl implements LobbyService {
             lobbyRepository.save(lobby);
 //            lobbyRepository.delete(lobby);
         } else {
+            lobby.setHost(lobby.getUsers().get(0));
             lobbyRepository.save(lobby);
         }
         return true;
