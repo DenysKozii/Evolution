@@ -44,7 +44,7 @@ public class UserRestController {
         return userService.getFriends(user);
     }
 
-    @PostMapping
+    @PostMapping("googleLogin")
     public String googleLogin(@RequestBody String token) throws IOException {
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
             HttpUriRequest request = new HttpGet(GOOGLE_API + token);
