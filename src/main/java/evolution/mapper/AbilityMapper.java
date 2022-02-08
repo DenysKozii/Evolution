@@ -1,9 +1,10 @@
 package evolution.mapper;
 
-import evolution.dto.AbilityDto;
-import evolution.entity.Ability;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
+import evolution.dto.AbilityDto;
+import evolution.entity.Ability;
 
 @Mapper(componentModel = "spring")
 public interface AbilityMapper {

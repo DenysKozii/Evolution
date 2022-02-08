@@ -1,11 +1,10 @@
 package evolution.mapper;
 
-import evolution.dto.FriendRequestDto;
-import evolution.dto.UserDto;
-import evolution.entity.FriendRequest;
-import evolution.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
+import evolution.dto.FriendRequestDto;
+import evolution.entity.FriendRequest;
 
 @Mapper(componentModel = "spring")
 public interface FriendRequestMapper {

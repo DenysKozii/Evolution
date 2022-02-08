@@ -1,16 +1,22 @@
 package evolution.controllers;
 
-import evolution.dto.UserDto;
-import evolution.jwt.JwtProvider;
-import evolution.services.impl.UserServiceImpl;
-import lombok.AllArgsConstructor;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import evolution.dto.UserDto;
+import evolution.jwt.JwtProvider;
+import evolution.services.UserService;
+import lombok.AllArgsConstructor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,11 +28,11 @@ import java.util.List;
 @RequestMapping("api/v1/users")
 public class UserRestController {
 
-    private final UserServiceImpl userService;
-    private final JwtProvider jwtProvider;
-    private static final String GOOGLE_API = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=";
-    private static final String GIVEN_NAME = "given_name";
-    private static final String EMAIL = "email";
+    private final        UserService userService;
+    private final        JwtProvider jwtProvider;
+    private static final String      GOOGLE_API = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=";
+    private static final String      GIVEN_NAME = "given_name";
+    private static final String      EMAIL = "email";
 
     @GetMapping
     public UserDto profile(@AuthenticationPrincipal UserDto user) {

@@ -30,4 +30,11 @@ public class BoxRestController {
     public void activate(@AuthenticationPrincipal UserDto user, @PathVariable Long boxId){
         boxService.activate(user, boxId);
     }
+
+    @PutMapping("buy/{boxId}")
+    public void buy(@AuthenticationPrincipal UserDto user, @PathVariable Long boxId){
+        boxService.buy(user, boxId);
+    }
+
+
 }

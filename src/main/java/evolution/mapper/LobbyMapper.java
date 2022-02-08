@@ -1,9 +1,10 @@
 package evolution.mapper;
 
-import evolution.dto.LobbyDto;
-import evolution.entity.Lobby;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
+import evolution.dto.LobbyDto;
+import evolution.entity.Lobby;
 
 @Mapper(componentModel = "spring")
 public interface LobbyMapper {

@@ -20,4 +20,6 @@ public interface BoxService {
     void activate(UserDto user, Long boxId);
 
     Box getByType(BoxType ratingDefence);
+
+    void buy(UserDto user, Long boxId);
 }
