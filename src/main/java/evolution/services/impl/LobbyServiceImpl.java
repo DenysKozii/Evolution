@@ -19,9 +19,7 @@ import evolution.services.LobbyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -87,25 +85,24 @@ public class LobbyServiceImpl implements LobbyService {
         return false;
     }
 
-    // todo check all conditions in the ticket
     @Override
     public boolean cancel(UserDto userDto) {
         User user = userRepository.findById(userDto.getId())
-                .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
+                                  .orElseThrow(() -> new EntityNotFoundException("User with id " + userDto.getId() + " doesn't exists!"));
         Lobby lobby = user.getLobby();
         if (lobby == null) {
             return false;
         }
+        if (lobby.getHost().equals(user)) {
+            lobby.setHost(null);
+        }
         lobby.getUsers().remove(user);
         user.setLobby(null);
         userRepository.save(user);
-        if (lobby.getUsers().isEmpty()) {
-            lobbyRepository.save(lobby);
-//            lobbyRepository.delete(lobby);
-        } else {
+        if (!lobby.getUsers().isEmpty() && lobby.getHost() == null) {
             lobby.setHost(lobby.getUsers().get(0));
-            lobbyRepository.save(lobby);
         }
+        lobbyRepository.save(lobby);
         return true;
     }
 
