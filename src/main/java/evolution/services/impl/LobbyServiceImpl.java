@@ -93,7 +93,7 @@ public class LobbyServiceImpl implements LobbyService {
         if (lobby == null) {
             return false;
         }
-        if (lobby.getHost().equals(user)) {
+        if (user.equals(lobby.getHost())) {
             lobby.setHost(null);
         }
         lobby.getUsers().remove(user);
