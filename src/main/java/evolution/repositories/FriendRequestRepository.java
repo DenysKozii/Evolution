@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public interface FriendRequestRepository extends JpaRepository<FriendRequest, Long>, PagingAndSortingRepository<FriendRequest, Long> {
 
-    List<FriendRequest> findAllByInvitorEmail(String username);
+    List<FriendRequest> findAllByInvitorEmail(String email);
 
-    List<FriendRequest> findAllByAcceptorEmail(String username);
+    List<FriendRequest> findAllByAcceptorEmail(String email);
 
 }
