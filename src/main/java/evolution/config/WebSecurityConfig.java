@@ -64,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/users/googleLogin", "/api/v1/users/login").permitAll()
+                .antMatchers("/", "/message", "/private-message", "/send-message", "/send-private-message/**").permitAll()
                 .antMatchers(SWAGGER_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
