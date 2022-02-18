@@ -87,8 +87,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://192.168.31.76");
-        configuration.addAllowedHeader("http://192.168.31.76");
+        configuration.addAllowedOrigin("http://178.159.236.8");
+        configuration.addAllowedHeader("http://178.159.236.8");
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
