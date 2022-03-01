@@ -29,7 +29,7 @@ public class User {
 
     private Integer code;
 
-    private String peerId;
+    private String socketId;
 
     private Integer rating;
 

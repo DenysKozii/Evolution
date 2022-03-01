@@ -28,7 +28,7 @@ public class UserDto extends BaseDto implements UserDetails {
 
     private Integer code;
 
-    private String peerId;
+    private String socketId;
 
     private String email;
 

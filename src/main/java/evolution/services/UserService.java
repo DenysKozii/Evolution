@@ -9,7 +9,7 @@ public interface UserService extends UserDetailsService {
 
     void register(String email, String username);
 
-    UserDto profile(UserDto user);
+    UserDto profile(UserDto user, String userId);
 
     List<UserDto> getFriends(UserDto user);
 }

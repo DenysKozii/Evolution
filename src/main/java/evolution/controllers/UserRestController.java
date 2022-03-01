@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -35,8 +36,8 @@ public class UserRestController {
     private static final String      EMAIL = "email";
 
     @GetMapping
-    public UserDto profile(@AuthenticationPrincipal UserDto user) {
-        return userService.profile(user);
+    public UserDto profile(@AuthenticationPrincipal UserDto user, final Principal principal) {
+        return userService.profile(user, principal.getName());
     }
 
     @GetMapping("friends")
