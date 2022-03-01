@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import evolution.dto.Message;
 import evolution.services.impl.WSService;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @RestController
 public class WSController {
 
-    @Autowired
-    private WSService service;
+    private final WSService service;
 
     @PostMapping("/send-message")
     public void sendMessage(@RequestBody final Message message) {

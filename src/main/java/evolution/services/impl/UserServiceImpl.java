@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
             user.setUsername(username);
             user.setEmail(email);
             user.setCode(usernameCode);
+            user.setSocketId(UUID.randomUUID().toString());
             user.setRating(0);
             user.setPlasma(100);
             user.setDna(10);
@@ -52,14 +53,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto profile(UserDto userDto, String socketId) {
+    public UserDto profile(UserDto userDto) {
         Date currentDate = new Date();
         LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         localDateTime = localDateTime.minusDays(1);
-        User user = userRepository.findByEmail(userDto.getEmail())
-                                  .orElseThrow(() -> new EntityNotFoundException(""));
-        user.setSocketId(socketId);
         if (userDto.getBoxUpdate().before(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))) {
+            User user = userRepository.findByEmail(userDto.getEmail())
+                                      .orElseThrow(() -> new EntityNotFoundException(""));
             user.getBoxes().add(boxService.getRandom());
             user.setBoxUpdate(currentDate);
             userRepository.save(user);

@@ -36,8 +36,8 @@ public class UserRestController {
     private static final String      EMAIL = "email";
 
     @GetMapping
-    public UserDto profile(@AuthenticationPrincipal UserDto user, final Principal principal) {
-        return userService.profile(user, principal.getName());
+    public UserDto profile(@AuthenticationPrincipal UserDto user) {
+        return userService.profile(user);
     }
 
     @GetMapping("friends")
