@@ -56,12 +56,12 @@ public class UserServiceImpl implements UserService {
         Date currentDate = new Date();
         LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         localDateTime = localDateTime.minusDays(1);
+        User user = userRepository.findByEmail(userDto.getEmail())
+                                  .orElseThrow(() -> new EntityNotFoundException(""));
+        user.setSocketId(socketId);
         if (userDto.getBoxUpdate().before(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))) {
-            User user = userRepository.findByEmail(userDto.getEmail())
-                                      .orElseThrow(() -> new EntityNotFoundException(""));
             user.getBoxes().add(boxService.getRandom());
             user.setBoxUpdate(currentDate);
-            user.setSocketId(socketId);
             userRepository.save(user);
         }
         return userDto;
