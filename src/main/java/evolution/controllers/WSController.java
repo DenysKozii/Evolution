@@ -21,6 +21,11 @@ public class WSController {
         service.notifyFrontend(message.getMessageContent());
     }
 
+    @PostMapping("join-lobby")
+    public void joinLobby(@RequestBody final Message message) {
+        service.notifyFrontend(message.getMessageContent());
+    }
+
     @PostMapping("/send-private-message/{id}")
     public void sendPrivateMessage(@PathVariable final String id,
                                    @RequestBody final Message message) {
